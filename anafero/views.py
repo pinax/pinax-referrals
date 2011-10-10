@@ -28,4 +28,14 @@ def create_referral(request):
 def process_referral(request, code):
     referral = get_object_or_404(Referral, code=code)
     referral.respond(request, "RESPONDED")
-    return redirect(referral.redirect_to)
+    
+    response = redirect(referral.redirect_to)
+    if request.is_anonymous():
+        response.set_cookie(
+            "anafero-referral",
+            "%s:%s" % (code, request.session.session_key)
+        )
+    else:
+        response.delete_cookie("anafero-referral")
+    
+    return response
