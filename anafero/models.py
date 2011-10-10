@@ -56,6 +56,19 @@ class Referral(models.Model):
         
         return obj
     
+    @classmethod
+    def record_response(cls, request, action_string):
+        if request.is_authenticated():
+            qs = ReferralResponse.objects.filter(user=request.user)
+        else:
+            qs = ReferralResponse.objects.filter(session_key=request.session.session_key)
+        
+        try:
+            response = qs.order_by("-created_at")[0]
+            return response.referral(request, action_string)
+        except IndexError:
+            pass
+    
     def respond(self, request, action_string):
         if request.user.is_authenticated():
             user = request.user
@@ -75,7 +88,7 @@ class Referral(models.Model):
 
 class ReferralResponse(models.Model):
     
-    referral = models.ForeignKey(Referral)
+    referral = models.ForeignKey(Referral, related_name="responses")
     session_key = models.CharField(max_length=40)
     user = models.ForeignKey(User, null=True)
     ip_address = models.CharField(max_length=45)
