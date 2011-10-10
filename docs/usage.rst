@@ -32,12 +32,16 @@ is to be used with an AJAX submission and handler.
 The recommended way is to use `jquery.form` and to do the following::
 
     $(function () {
-        $('form.referral').ajaxForm(function(data) {
-            if (data.status == "OK") {
-                $(this).html('<input type="text" value="' + data.url + '" />');
-            } else {
-                $(this).html('<div class="error">' + data.errors + '</div>');
+        $('form.referral').each(function(i, e) {
+            var form = $(e);
+            options = {
+                dataType: "json",
+                success: function(data) {
+                    form.html('<input type="text" value="' + data.url + '" />');
+                    form.find("input[type=text]").select();
+                }
             }
+            form.ajaxForm(options);
         });
     });
 
