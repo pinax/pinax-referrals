@@ -40,7 +40,7 @@ class Referral(models.Model):
         code = sha_constructor("".join(bits)).hexdigest()
         
         if target:
-            obj = cls.objects.create(
+            obj, _ = cls.objects.get_or_create(
                 user=user,
                 code=code,
                 redirect_to=redirect_to,
@@ -48,7 +48,7 @@ class Referral(models.Model):
                 target_object_id=target.pk
             )
         else: 
-            obj = cls.objects.create(
+            obj, _ = cls.objects.get_or_create(
                 user=user,
                 code=code,
                 redirect_to=redirect_to,
@@ -58,14 +58,14 @@ class Referral(models.Model):
     
     @classmethod
     def record_response(cls, request, action_string):
-        if request.is_authenticated():
+        if request.user.is_authenticated():
             qs = ReferralResponse.objects.filter(user=request.user)
         else:
             qs = ReferralResponse.objects.filter(session_key=request.session.session_key)
         
         try:
             response = qs.order_by("-created_at")[0]
-            return response.referral(request, action_string)
+            return response.referral.respond(request, action_string)
         except IndexError:
             pass
     

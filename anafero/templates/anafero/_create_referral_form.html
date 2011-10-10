@@ -1,5 +1,5 @@
 <form class="referral" action="{% url anafero_create_referral %}" method="post">
-    {% crsf_token %}
+    {% csrf_token %}
     <input type="hidden" name="redirect_to" id="redirect_to" value="{{ url }}" />
     <input type="hidden" name="obj_ct_pk" id="obj_ct_pk" value="{{ obj_ct.pk }}" />
     <input type="hidden" name="obj_pk" id="obj_pk" value="{{ obj.pk }}" />

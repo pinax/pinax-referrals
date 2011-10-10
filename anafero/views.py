@@ -19,7 +19,7 @@ def create_referral(request):
         redirect_to=request.POST.get("redirect_to"),
         target=target
     )
-    path = reverse("anafero_process_referral", code=referral.code)
+    path = reverse("anafero_process_referral", kwargs={"code": referral.code})
     domain = Site.objects.get_current().domain
     url = "http://%s%s" % (domain, path)
     return HttpResponse(json.dumps({"status": "OK", "url": url}))
@@ -30,7 +30,7 @@ def process_referral(request, code):
     referral.respond(request, "RESPONDED")
     
     response = redirect(referral.redirect_to)
-    if request.is_anonymous():
+    if request.user.is_anonymous():
         response.set_cookie(
             "anafero-referral",
             "%s:%s" % (code, request.session.session_key)
