@@ -12,3 +12,12 @@ ANAFERO_IP_ADDRESS_META_FIELD
 
 This is the header value that is retrieved from `request.META` to record
 the ip address of the the respondent.
+
+
+ANAFERO_SECURE_URLS
+^^^^^^^^^^^^^^^^^^^
+
+:Default: ``False``
+
+Setting this to ``True`` will enable produce urls with ``https`` instead
+of ``http``.
