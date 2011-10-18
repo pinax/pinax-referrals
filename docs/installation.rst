@@ -29,7 +29,7 @@ Installation
         ...
     ]
 
-* Lastly you will want to add `kaleo.urls` to your urls definition::
+* Lastly you will want to add `anafero.urls` to your urls definition::
 
     ...
     url(r"^referrals/", include("anafero.urls")),
