@@ -1,8 +1,8 @@
 import datetime
+import random
 
 from django.db import models
 from django.conf import settings
-from django.utils.hashcompat import sha_constructor
 from django.core.urlresolvers import reverse
 
 from django.contrib.auth.models import User
@@ -12,6 +12,15 @@ from django.contrib.sites.models import Site
 
 
 IP_ADDRESS_FIELD = getattr(settings, "ANAFERO_IP_ADDRESS_META_FIELD", "HTTP_X_FORWARDED_FOR")
+SECURE_URLS = getattr(settings, "ANAFERO_SECURE_URLS", False)
+HASH_LENGTH = getattr(settings, "ANAFERO_HASH_LENGTH", 5)
+if HASH_LENGTH > 40:
+    HASH_LENGTH = 40
+
+
+def generate_secret_id(length=HASH_LENGTH):
+    t = "abcdefghijkmnopqrstuvwwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ1234567890"
+    return "".join([random.choice(t) for i in range(length)])
 
 
 class Referral(models.Model):
@@ -41,16 +50,9 @@ class Referral(models.Model):
     
     @classmethod
     def create(cls, user, redirect_to, target=None):
-        bits = [
-            settings.SECRET_KEY,
-            str(user.pk),
-            redirect_to,
-        ]
-        if target:
-            bits.append(str(target.pk))
-            bits.append(str(target.__class__))
-        
-        code = sha_constructor("".join(bits)).hexdigest()
+        code = generate_secret_id()
+        while Referral.objects.filter(code=code).count() > 0:
+            code = generate_secret_id()
         
         if target:
             obj, _ = cls.objects.get_or_create(
