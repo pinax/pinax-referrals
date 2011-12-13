@@ -27,7 +27,7 @@ def create_referral(request):
     domain = Site.objects.get_current().domain
     protocol = "https" if SECURE_URLS else "http"
     url = "%s://%s%s" % (protocol, domain, path)
-    return HttpResponse(json.dumps({"url": url}))
+    return HttpResponse(json.dumps({"url": url, "code": referral.code}))
 
 
 def process_referral(request, code):
