@@ -26,6 +26,10 @@ class Referral(models.Model):
     
     created_at = models.DateTimeField(default=datetime.datetime.now)
     
+    @property
+    def response_count(self):
+        return self.responses.filter(action="RESPONDED").count()
+    
     @classmethod
     def create(cls, user, redirect_to, target=None):
         bits = [
