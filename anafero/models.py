@@ -3,10 +3,12 @@ import datetime
 from django.db import models
 from django.conf import settings
 from django.utils.hashcompat import sha_constructor
+from django.core.urlresolvers import reverse
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.contrib.sites.models import Site
 
 
 IP_ADDRESS_FIELD = getattr(settings, "ANAFERO_IP_ADDRESS_META_FIELD", "HTTP_X_FORWARDED_FOR")
@@ -25,6 +27,13 @@ class Referral(models.Model):
     )
     
     created_at = models.DateTimeField(default=datetime.datetime.now)
+    
+    @property
+    def url(self):
+        path = reverse("anafero_process_referral", kwargs={"code": self.code})
+        domain = Site.objects.get_current().domain
+        protocol = "https" if SECURE_URLS else "http"
+        return "%s://%s%s" % (protocol, domain, path)
     
     @property
     def response_count(self):
