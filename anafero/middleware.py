@@ -23,6 +23,6 @@ class SessionJumpingMiddleware(object):
             request.user._can_delete_anafero_cookie = True
     
     def process_response(self, request, response):
-        if getattr(request.user, "_can_delete_anafero_cookie", False):
+        if hasattr(request, "user") and getattr(request.user, "_can_delete_anafero_cookie", False):
             response.delete_cookie("anafero-referral")
         return response
