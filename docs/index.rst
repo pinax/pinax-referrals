@@ -12,6 +12,8 @@ site can send out in a Tweet. Upon clicking that link, a response to that
 referral code will be record as well any other activity that the site
 builder wants to track for that session.
 
+It is also possilbe for anonymous referral links/codes to be generated which is useful in marketing promotions and the like.
+
 
 Development
 -----------

@@ -72,6 +72,12 @@ their referral url that they could forward on to other users::
 
     {{ user.get_profile.referral.url }}
 
+The only required parameter for ``Referral.create`` is ``redirect_to``. If
+you don't specify a user it will be recorded as ``None``. This can be useful
+if you wanted to attach a relationship between some object in your system
+to a referral that might not have a user associated with it.
+
+
 .. _Referral.record_response:
 
 Referral.record_response

@@ -25,7 +25,7 @@ def generate_secret_id(length=HASH_LENGTH):
 
 class Referral(models.Model):
     
-    user = models.ForeignKey(User, related_name="referral_codes")
+    user = models.ForeignKey(User, related_name="referral_codes", null=True)
     code = models.CharField(max_length=40, unique=True)
     redirect_to = models.CharField(max_length=512)
     target_content_type = models.ForeignKey(ContentType, null=True)
@@ -49,7 +49,7 @@ class Referral(models.Model):
         return self.responses.filter(action="RESPONDED").count()
     
     @classmethod
-    def create(cls, user, redirect_to, target=None):
+    def create(cls, redirect_to, user=None, target=None):
         code = generate_secret_id()
         while Referral.objects.filter(code=code).count() > 0:
             code = generate_secret_id()
@@ -110,4 +110,3 @@ class ReferralResponse(models.Model):
     action = models.CharField(max_length=128)
     
     created_at = models.DateTimeField(default=datetime.datetime.now)
-

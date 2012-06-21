@@ -3,6 +3,13 @@
 ChangeLog
 =========
 
+0.3
+---
+
+- FEATURE: changed user on Referral to be nullable, thus enabling anonymous or
+  site administered referral codes
+
+
 0.2.1
 -----
 
