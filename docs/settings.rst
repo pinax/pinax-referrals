@@ -21,3 +21,11 @@ ANAFERO_SECURE_URLS
 
 Setting this to ``True`` will enable produce urls with ``https`` instead
 of ``http``.
+
+
+ANAFERO_HASH_LENGTH
+^^^^^^^^^^^^^^^^^^^
+
+:Default: ``5``
+
+This controls the length of the referral codes that are generated.
