@@ -46,6 +46,32 @@ The recommended way is to use `jquery.form` and to do the following::
     });
 
 
+.. _Referral.create
+
+Referral.create
+---------------
+
+This is the factory method that the ``create_referral`` view calls but can
+be called directly in case you needed to integrate in a different way with
+anafero.
+
+For example, you might want to automatically give every user a referral code
+that is emailed to them upon signup. In this case, you could created a one
+to one relationshiop between their ``Profile`` and anafero's ``Referral`` and
+create a signal receiver for when the ``Profile`` is created that calls::
+
+    referral = Referral.create(
+        user=profile.user,
+        redirect_to=reverse("home")
+    )
+    profile.referral = referral
+    profile.save()
+
+Then you could, in the welcome email that you send them upon signup render
+their referral url that they could forward on to other users::
+
+    {{ user.get_profile.referral.url }}
+
 .. _Referral.record_response:
 
 Referral.record_response
