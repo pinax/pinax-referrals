@@ -1,5 +1,5 @@
 import datetime
-import random
+import sys
 
 from django.db import models
 from django.conf import settings
@@ -13,14 +13,17 @@ from django.contrib.sites.models import Site
 
 IP_ADDRESS_FIELD = getattr(settings, "ANAFERO_IP_ADDRESS_META_FIELD", "HTTP_X_FORWARDED_FOR")
 SECURE_URLS = getattr(settings, "ANAFERO_SECURE_URLS", False)
-HASH_LENGTH = getattr(settings, "ANAFERO_HASH_LENGTH", 5)
-if HASH_LENGTH > 40:
-    HASH_LENGTH = 40
+CODE_GENERATOR = getattr(settings, "ANAFERO_CODE_GENERATOR", "anafero.utils.generate_code")
 
 
-def generate_secret_id(length=HASH_LENGTH):
-    t = "abcdefghijkmnopqrstuvwwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ1234567890"
-    return "".join([random.choice(t) for i in range(length)])
+def import_obj(name):
+    dot = name.rindex('.')
+    mod_name, obj_name = name[:dot], name[dot+1:]
+    __import__(mod_name)
+    return getattr(sys.modules[mod_name], obj_name)
+
+
+CODE_GENERATOR = import_obj(CODE_GENERATOR)
 
 
 class Referral(models.Model):
@@ -60,9 +63,7 @@ class Referral(models.Model):
     
     @classmethod
     def create(cls, redirect_to, user=None, target=None):
-        code = generate_secret_id()
-        while Referral.objects.filter(code=code).count() > 0:
-            code = generate_secret_id()
+        code = CODE_GENERATOR(cls)
         
         if target:
             obj, _ = cls.objects.get_or_create(
