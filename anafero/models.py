@@ -93,11 +93,12 @@ class Referral(models.Model):
         except IndexError:
             pass
     
-    def respond(self, request, action_string):
-        if request.user.is_authenticated():
-            user = request.user
-        else:
-            user = None
+    def respond(self, request, action_string, user=None):
+        if user is None:
+            if request.user.is_authenticated():
+                user = request.user
+            else:
+                user = None
         
         ip_address = request.META.get(IP_ADDRESS_FIELD, "")
         
