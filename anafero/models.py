@@ -40,11 +40,12 @@ class Referral(models.Model):
     @classmethod
     def for_request(cls, request):
         cookie = request.COOKIES.get("anafero-referral")
-        code, session_key = cookie.split(":")
-        try:
-            return Referral.objects.get(code=code)
-        except Referral.DoesNotExist:
-            return None
+        if cookie:
+            code, session_key = cookie.split(":")
+            try:
+                return Referral.objects.get(code=code)
+            except Referral.DoesNotExist:
+                pass
     
     @property
     def url(self):
