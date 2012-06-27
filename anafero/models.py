@@ -37,6 +37,15 @@ class Referral(models.Model):
     
     created_at = models.DateTimeField(default=datetime.datetime.now)
     
+    @classmethod
+    def for_request(cls, request):
+        cookie = request.COOKIES.get("anafero-referral")
+        code, session_key = cookie.split(":")
+        try:
+            return Referral.objects.get(code=code)
+        except Referral.DoesNotExist:
+            return None
+    
     @property
     def url(self):
         path = reverse("anafero_process_referral", kwargs={"code": self.code})
