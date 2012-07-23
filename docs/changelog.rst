@@ -3,6 +3,17 @@
 ChangeLog
 =========
 
+0.5
+---
+
+- FEATURE: added ability to label referrals
+- ENHANCEMENT: added support for bootstrap-ajax.js
+- FEATURE: added a ``referral_responses`` assignment template tag
+- FEATURE: added an ``activity_display`` template filter
+- ENHANCEMENT: added a new classmethod on ``Referral`` for getting a referral
+  object for a given ``request`` object.
+
+
 0.4
 ---
 
