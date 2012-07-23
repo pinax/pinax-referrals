@@ -12,3 +12,11 @@ def create_referral(url, obj=None):
         return {"url": url, "obj": obj, "obj_ct": ContentType.objects.get_for_model(obj)}
     else:
         return {"url": url, "obj": "", "obj_ct": ""}
+
+
+@register.assignment_tag
+def referral_responses(user):
+    return ReferralResponse.objects.filter(
+        referral__user=user
+    ).order_by("-created_at")
+

@@ -32,4 +32,5 @@ Contents
  usage
  settings
  templates
+ templatetags
  changelog
