@@ -29,6 +29,7 @@ CODE_GENERATOR = import_obj(CODE_GENERATOR)
 class Referral(models.Model):
     
     user = models.ForeignKey(User, related_name="referral_codes", null=True)
+    label = models.CharField(max_length=100, blank=True)
     code = models.CharField(max_length=40, unique=True)
     redirect_to = models.CharField(max_length=512)
     target_content_type = models.ForeignKey(ContentType, null=True)
@@ -62,7 +63,7 @@ class Referral(models.Model):
         return self.responses.filter(action="RESPONDED").count()
     
     @classmethod
-    def create(cls, redirect_to, user=None, target=None):
+    def create(cls, redirect_to, user=None, label="", target=None):
         code = CODE_GENERATOR(cls)
         
         if target:
@@ -70,6 +71,7 @@ class Referral(models.Model):
                 user=user,
                 code=code,
                 redirect_to=redirect_to,
+                label=label,
                 target_content_type=ContentType.objects.get_for_model(target),
                 target_object_id=target.pk
             )
@@ -77,6 +79,7 @@ class Referral(models.Model):
             obj, _ = cls.objects.get_or_create(
                 user=user,
                 code=code,
+                label=label,
                 redirect_to=redirect_to,
             )
         

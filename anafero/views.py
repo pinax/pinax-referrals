@@ -20,6 +20,7 @@ def create_referral(request):
     referral = Referral.create(
         user=request.user,
         redirect_to=request.POST.get("redirect_to"),
+        label=request.POST.get("label", ""),
         target=target
     )
     

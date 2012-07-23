@@ -77,6 +77,10 @@ you don't specify a user it will be recorded as ``None``. This can be useful
 if you wanted to attach a relationship between some object in your system
 to a referral that might not have a user associated with it.
 
+You can also pass in an optional ``label`` kwarg to ``Referral.create`` if
+you wanted to allow your users to create and manage multiple referrals so
+that labeling them became important to keep track of them.
+
 
 .. _Referral.record_response:
 
