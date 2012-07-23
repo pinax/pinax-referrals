@@ -64,3 +64,18 @@ associated with the user's different labeled referrals. Example::
     {% for response in responses %}
         {# response is a ReferralResponse object #}
     {% endfor %}
+
+
+.. _action_display:
+
+action_display
+--------------
+
+This filter converts a response code into a user friendly display of what that
+code means. The definitions exist in the setting ``ANAFERO_ACTION_DISPLAY``.
+
+    {% load anafero_tags %}
+    
+    <p>
+        {{ response.action|action_display }}
+    </p>

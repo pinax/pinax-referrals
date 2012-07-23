@@ -14,6 +14,7 @@ from django.contrib.sites.models import Site
 IP_ADDRESS_FIELD = getattr(settings, "ANAFERO_IP_ADDRESS_META_FIELD", "HTTP_X_FORWARDED_FOR")
 SECURE_URLS = getattr(settings, "ANAFERO_SECURE_URLS", False)
 CODE_GENERATOR = getattr(settings, "ANAFERO_CODE_GENERATOR", "anafero.utils.generate_code")
+ACTION_DISPLAY = getattr(settings, "ANAFERO_ACTION_DISPLAY", {"RESPONDED": "Clicked on referral link"})
 
 
 def import_obj(name):

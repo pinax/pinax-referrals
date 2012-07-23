@@ -2,6 +2,8 @@ from django import template
 
 from django.contrib.contenttypes.models import ContentType
 
+from anafero.models import ReferralResponse, ACTION_DISPLAY
+
 
 register = template.Library()
 
@@ -20,3 +22,7 @@ def referral_responses(user):
         referral__user=user
     ).order_by("-created_at")
 
+
+@register.filter
+def action_display(value):
+    return ACTION_DISPLAY.get(value, value)

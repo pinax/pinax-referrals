@@ -36,3 +36,12 @@ the class of the referral model, or `Referral`, this is done as a pure
 convience so as to alleviate the need for you to have to import it
 should you need it (and you most likely will if you want to be
 certain of uniqueness).
+
+
+ANAFERO_ACTION_DISPLAY
+^^^^^^^^^^^^^^^^^^^^^^
+
+:Default: ``{"RESPONDED": "Clicked on referral link"}``
+
+Defines a dictionary mapping action codes for responses to user-friendly
+display text. Used by the ``action_display`` template filter.
