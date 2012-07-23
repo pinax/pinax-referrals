@@ -64,3 +64,16 @@ In this case the ``referral_response`` will be None if the user on the request
 doesn't have any previously recorded referral responses. In addition, if the user
 has responded to more than one Referral code, then this will associate the
 activity with the most recent response.
+
+
+.. _Referral.referral_for_request:
+
+Referral.referral_for_request
+-----------------------------
+
+This class method, will give you a referral object for the given request in
+case you needed to apply any business logic in your project. For example, to
+do any comparisons on the referral.target with another object you have in
+context for segmenting permissions or authorizations to make your referral
+system more fine grained.
+

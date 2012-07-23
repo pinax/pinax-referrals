@@ -87,14 +87,19 @@ class Referral(models.Model):
     
     @classmethod
     def record_response(cls, request, action_string):
+        referral = cls.referral_for_request(request)
+        if referral:
+            return referral.respond(request, action_string)
+    
+    @classmethod
+    def referral_for_request(cls, request):
         if request.user.is_authenticated():
             qs = ReferralResponse.objects.filter(user=request.user)
         else:
             qs = ReferralResponse.objects.filter(session_key=request.session.session_key)
         
         try:
-            response = qs.order_by("-created_at")[0]
-            return response.referral.respond(request, action_string)
+            return qs.order_by("-created_at")[0].referral
         except IndexError:
             pass
     
