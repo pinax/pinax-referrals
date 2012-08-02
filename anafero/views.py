@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 
 from anafero.models import Referral
+from anafero.utils import ensure_session_key
 
 
 @login_required
@@ -47,12 +48,12 @@ def create_referral(request):
 def process_referral(request, code):
     referral = get_object_or_404(Referral, code=code)
     referral.respond(request, "RESPONDED")
-    request.session["anafero-tracking"] = True
+    session_key = ensure_session_key(request)
     response = redirect(referral.redirect_to)
     if request.user.is_anonymous():
         response.set_cookie(
             "anafero-referral",
-            "%s:%s" % (code, request.session.session_key)
+            "%s:%s" % (code, session_key)
         )
     else:
         response.delete_cookie("anafero-referral")
