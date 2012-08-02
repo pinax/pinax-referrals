@@ -3,6 +3,11 @@
 ChangeLog
 =========
 
+0.5.2
+-----
+
+- BUG: Fixed a stupid mistake
+
 0.5.1
 -----
 

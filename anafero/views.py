@@ -47,8 +47,8 @@ def create_referral(request):
 
 def process_referral(request, code):
     referral = get_object_or_404(Referral, code=code)
-    referral.respond(request, "RESPONDED")
     session_key = ensure_session_key(request)
+    referral.respond(request, "RESPONDED")
     response = redirect(referral.redirect_to)
     if request.user.is_anonymous():
         response.set_cookie(
