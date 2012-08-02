@@ -3,6 +3,12 @@
 ChangeLog
 =========
 
+0.5.1
+-----
+
+- BUG: fixed an issue with sessions in Django 1.4
+
+
 0.5
 ---
 
