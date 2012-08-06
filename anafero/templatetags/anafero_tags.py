@@ -8,12 +8,17 @@ from anafero.models import ReferralResponse, ACTION_DISPLAY
 register = template.Library()
 
 
-@register.inclusion_tag("anafero/_create_referral_form.html")
-def create_referral(url, obj=None):
+@register.inclusion_tag("anafero/_create_referral_form.html", takes_context=True)
+def create_referral(context, url, obj=None):
     if obj:
-        return {"url": url, "obj": obj, "obj_ct": ContentType.objects.get_for_model(obj)}
+        context.update(
+            {"url": url, "obj": obj, "obj_ct": ContentType.objects.get_for_model(obj)}
+        )
     else:
-        return {"url": url, "obj": "", "obj_ct": ""}
+        context.update(
+            {"url": url, "obj": "", "obj_ct": ""}
+        )
+    return context
 
 
 @register.assignment_tag
