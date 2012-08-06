@@ -3,6 +3,11 @@
 ChangeLog
 =========
 
+0.6
+---
+
+- ENHANCEMENT: send full context to the ``create_referral`` template tag
+
 0.5.2
 -----
 
