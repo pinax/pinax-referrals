@@ -21,11 +21,31 @@ def create_referral(context, url, obj=None):
     return context
 
 
-@register.assignment_tag
-def referral_responses(user):
-    return ReferralResponse.objects.filter(
-        referral__user=user
-    ).order_by("-created_at")
+class ReferralResponsesNode(template.Node):
+    
+    def __init__(self, user_var, target_var):
+        self.user_var = user_var
+        self.target_var = target_var
+    
+    def render(self, context):
+        user = self.user_var.resolve(context)
+        qs = ReferralResponse.objects.filter(referral__user=user)
+        qs = qs.order_by("-created_at")
+        context[self.target_var] = qs
+        return ""
+
+
+@register.tag
+def referral_responses(parser, token):
+    bits = token.split_contents()
+    tag_name = bits[0]
+    bits = bits[1:]
+    if len(bits) < 2 or bits[-2] != "as":
+        raise template.TemplateSyntaxError(
+            "'%s' tag takes at least 2 arguments and the second last "
+            "argument must be 'as'" % tag_name
+        )
+    return ReferralResponsesNode(parser.compile_filter(bits[0]), bits[2])
 
 
 @register.filter
