@@ -6,7 +6,7 @@ ChangeLog
 0.6.1
 -----
 
-- BUG: Rewrote ``referral_responses`` to run on Django 1.3
+- ENHANCEMENT: Rewrote ``referral_responses`` to run on Django 1.3
 
 0.6
 ---
