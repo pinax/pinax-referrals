@@ -19,7 +19,7 @@ ACTION_DISPLAY = getattr(settings, "ANAFERO_ACTION_DISPLAY", {"RESPONDED": "Clic
 
 def import_obj(name):
     dot = name.rindex('.')
-    mod_name, obj_name = name[:dot], name[dot+1:]
+    mod_name, obj_name = name[:dot], name[dot + 1:]
     __import__(mod_name)
     return getattr(sys.modules[mod_name], obj_name)
 
@@ -82,7 +82,7 @@ class Referral(models.Model):
                 target_content_type=ContentType.objects.get_for_model(target),
                 target_object_id=target.pk
             )
-        else: 
+        else:
             obj, _ = cls.objects.get_or_create(
                 user=user,
                 code=code,
