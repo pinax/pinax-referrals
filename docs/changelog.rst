@@ -3,6 +3,11 @@
 ChangeLog
 =========
 
+0.7
+---
+
+- ENHANCEMENT: Made admin a bit more usable
+
 0.6.1
 -----
 
