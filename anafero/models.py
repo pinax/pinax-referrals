@@ -42,6 +42,12 @@ class Referral(models.Model):
     
     created_at = models.DateTimeField(default=datetime.datetime.now)
     
+    def __unicode__(self):
+        if self.user:
+            return u"%s (%s)" % (self.user, self.code)
+        else:
+            return self.code
+    
     @classmethod
     def for_request(cls, request):
         cookie = request.COOKIES.get("anafero-referral")
