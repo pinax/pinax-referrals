@@ -1,8 +1,6 @@
 import datetime
-import sys
 
 from django.db import models
-from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from django.contrib.auth.models import User
@@ -10,21 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.sites.models import Site
 
-
-IP_ADDRESS_FIELD = getattr(settings, "ANAFERO_IP_ADDRESS_META_FIELD", "HTTP_X_FORWARDED_FOR")
-SECURE_URLS = getattr(settings, "ANAFERO_SECURE_URLS", False)
-CODE_GENERATOR = getattr(settings, "ANAFERO_CODE_GENERATOR", "anafero.utils.generate_code")
-ACTION_DISPLAY = getattr(settings, "ANAFERO_ACTION_DISPLAY", {"RESPONDED": "Clicked on referral link"})
-
-
-def import_obj(name):
-    dot = name.rindex('.')
-    mod_name, obj_name = name[:dot], name[dot + 1:]
-    __import__(mod_name)
-    return getattr(sys.modules[mod_name], obj_name)
-
-
-CODE_GENERATOR = import_obj(CODE_GENERATOR)
+from anafero.conf import settings
 
 
 class Referral(models.Model):
@@ -62,7 +46,7 @@ class Referral(models.Model):
     def url(self):
         path = reverse("anafero_process_referral", kwargs={"code": self.code})
         domain = Site.objects.get_current().domain
-        protocol = "https" if SECURE_URLS else "http"
+        protocol = "https" if settings.ANAFERO_SECURE_URLS else "http"
         return "%s://%s%s" % (protocol, domain, path)
     
     @property
@@ -71,7 +55,7 @@ class Referral(models.Model):
     
     @classmethod
     def create(cls, redirect_to, user=None, label="", target=None):
-        code = CODE_GENERATOR(cls)
+        code = settings.ANAFERO_CODE_GENERATOR_CALLBACK(cls)
         
         if target:
             obj, _ = cls.objects.get_or_create(
@@ -117,7 +101,10 @@ class Referral(models.Model):
             else:
                 user = None
         
-        ip_address = request.META.get(IP_ADDRESS_FIELD, "")
+        ip_address = request.META.get(
+            settings.ANAFERO_IP_ADDRESS_META_FIELD,
+            ""
+        )
         
         return ReferralResponse.objects.create(
             referral=self,
@@ -125,6 +112,11 @@ class Referral(models.Model):
             ip_address=ip_address,
             action=action_string,
             user=user
+        )
+    
+    def filtered_responses(self):
+        return settings.ANAFERO_RESPONSES_FILTER_CALLBACK(
+            referral=self
         )
 
 

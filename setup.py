@@ -132,6 +132,9 @@ setup(
         "Programming Language :: Python",
         "Framework :: Django",
     ],
+    install_requires=[
+        "django-appconf==0.5"
+    ],
     zip_safe=False
 )
 

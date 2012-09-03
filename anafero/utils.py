@@ -1,15 +1,5 @@
-import random
-
-
-def generate_code(referral_class):
-    def _generate_code():
-        t = "abcdefghijkmnopqrstuvwwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ1234567890"
-        return "".join([random.choice(t) for i in range(40)])
-    
-    code = _generate_code()
-    while referral_class.objects.filter(code=code).exists():
-        code = _generate_code()
-    return code
+from django.core.exceptions import ImproperlyConfigured
+from django.utils import importlib
 
 
 def ensure_session_key(request):
@@ -28,3 +18,17 @@ def ensure_session_key(request):
         request.session.modified = True
         key = request.session.session_key
     return key
+
+
+def load_path_attr(path):
+    i = path.rfind(".")
+    module, attr = path[:i], path[i + 1:]
+    try:
+        mod = importlib.import_module(module)
+    except ImportError, e:
+        raise ImproperlyConfigured("Error importing %s: '%s'" % (module, e))
+    try:
+        attr = getattr(mod, attr)
+    except AttributeError:
+        raise ImproperlyConfigured("Module '%s' does not define a '%s'" % (module, attr))
+    return attr

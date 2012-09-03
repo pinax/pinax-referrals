@@ -2,7 +2,7 @@ from django import template
 
 from django.contrib.contenttypes.models import ContentType
 
-from anafero.models import ReferralResponse, ACTION_DISPLAY
+from anafero.conf import settings
 
 
 register = template.Library()
@@ -29,8 +29,9 @@ class ReferralResponsesNode(template.Node):
     
     def render(self, context):
         user = self.user_var.resolve(context)
-        qs = ReferralResponse.objects.filter(referral__user=user)
-        qs = qs.order_by("-created_at")
+        qs = settings.ANAFERO_RESPONSES_FILTER_CALLBACK(
+            user=user
+        )
         context[self.target_var] = qs
         return ""
 
@@ -50,4 +51,4 @@ def referral_responses(parser, token):
 
 @register.filter
 def action_display(value):
-    return ACTION_DISPLAY.get(value, value)
+    return settings.ANAFERO_ACTION_DISPLAY.get(value, value)
