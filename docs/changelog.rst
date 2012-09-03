@@ -3,6 +3,12 @@
 ChangeLog
 =========
 
+0.8
+---
+
+- FEATURE: added ability to override filtering of responses
+
+
 0.7
 ---
 
