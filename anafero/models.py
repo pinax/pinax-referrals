@@ -1,7 +1,6 @@
-import datetime
-
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -24,7 +23,7 @@ class Referral(models.Model):
         fk_field="target_object_id"
     )
     
-    created_at = models.DateTimeField(default=datetime.datetime.now)
+    created_at = models.DateTimeField(default=timezone.now)
     
     def __unicode__(self):
         if self.user:
@@ -128,4 +127,4 @@ class ReferralResponse(models.Model):
     ip_address = models.CharField(max_length=45)
     action = models.CharField(max_length=128)
     
-    created_at = models.DateTimeField(default=datetime.datetime.now)
+    created_at = models.DateTimeField(default=timezone.now)

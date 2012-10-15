@@ -3,6 +3,12 @@
 ChangeLog
 =========
 
+0.8.1
+-----
+
+- ENHANCEMENT: switched over to use `django.utils.timezone.now` instead of `datetime.datetime.now`
+
+
 0.8
 ---
 
