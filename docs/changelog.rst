@@ -3,6 +3,19 @@
 ChangeLog
 =========
 
+0.9
+---
+
+- FEATURE: added ability to record a specific object in reference to each response
+
+Migration from 0.8.1
+^^^^^^^^^^^^^^^^^^^^
+
+    ALTER TABLE "anafero_referralresponse"
+     ADD COLUMN "target_content_type_id" integer REFERENCES "django_content_type" ("id") DEFERRABLE INITIALLY DEFERRED,
+     ADD COLUMN "target_object_id" integer;
+
+
 0.8.1
 -----
 
