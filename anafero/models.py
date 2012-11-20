@@ -76,10 +76,10 @@ class Referral(models.Model):
         return obj
     
     @classmethod
-    def record_response(cls, request, action_string):
+    def record_response(cls, request, action_string, target=None):
         referral = cls.referral_for_request(request)
         if referral:
-            return referral.respond(request, action_string)
+            return referral.respond(request, action_string, target=target)
     
     @classmethod
     def referral_for_request(cls, request):
@@ -93,7 +93,7 @@ class Referral(models.Model):
         except IndexError:
             pass
     
-    def respond(self, request, action_string, user=None):
+    def respond(self, request, action_string, user=None, target=None):
         if user is None:
             if request.user.is_authenticated():
                 user = request.user
@@ -110,7 +110,8 @@ class Referral(models.Model):
             session_key=request.session.session_key,
             ip_address=ip_address,
             action=action_string,
-            user=user
+            user=user,
+            target=target
         )
     
     def filtered_responses(self):
@@ -126,5 +127,12 @@ class ReferralResponse(models.Model):
     user = models.ForeignKey(User, null=True)
     ip_address = models.CharField(max_length=45)
     action = models.CharField(max_length=128)
+    
+    target_content_type = models.ForeignKey(ContentType, null=True)
+    target_object_id = models.PositiveIntegerField(null=True)
+    target = generic.GenericForeignKey(
+        ct_field="target_content_type",
+        fk_field="target_object_id"
+    )
     
     created_at = models.DateTimeField(default=timezone.now)

@@ -65,6 +65,15 @@ doesn't have any previously recorded referral responses. In addition, if the use
 has responded to more than one Referral code, then this will associate the
 activity with the most recent response.
 
+In addition, this supports passing an options ``target`` keyward argument, if
+you wanted to record associations with specific objects. For example::
+
+    Referral.record_response(request, "SOME_ACTION", target=some_object)
+
+This will record a generic foreign key to ``some_object`` that you can use elsewhere
+to identify activity from your referral at a deeper level than just based on
+the action label.
+
 
 .. _Referral.referral_for_request:
 
