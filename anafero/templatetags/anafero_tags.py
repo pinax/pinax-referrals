@@ -43,7 +43,7 @@ def referral_responses(parser, token):
     bits = bits[1:]
     if len(bits) < 2 or bits[-2] != "as":
         raise template.TemplateSyntaxError(
-            "'%s' tag takes at least 2 arguments and the second last "
+            "'%s' tag takes at least 2 arguments and the second to last "
             "argument must be 'as'" % tag_name
         )
     return ReferralResponsesNode(parser.compile_filter(bits[0]), bits[2])
