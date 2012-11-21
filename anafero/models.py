@@ -105,14 +105,17 @@ class Referral(models.Model):
             ""
         )
         
-        return ReferralResponse.objects.create(
+        kwargs = dict(
             referral=self,
             session_key=request.session.session_key,
             ip_address=ip_address,
             action=action_string,
-            user=user,
-            target=target
+            user=user
         )
+        if target:
+            kwargs.update({"target": target})
+        
+        return ReferralResponse.objects.create(**kwargs)
     
     def filtered_responses(self):
         return settings.ANAFERO_RESPONSES_FILTER_CALLBACK(
