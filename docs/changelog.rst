@@ -3,6 +3,12 @@
 ChangeLog
 =========
 
+0.9.1
+-----
+
+- BUG: Fix issue where target response is None
+
+
 0.9
 ---
 
