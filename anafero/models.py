@@ -8,6 +8,7 @@ from django.contrib.contenttypes import generic
 from django.contrib.sites.models import Site
 
 from anafero.conf import settings
+from anafero.signals import user_linked_to_response
 
 
 class Referral(models.Model):
@@ -92,6 +93,12 @@ class Referral(models.Model):
             return qs.order_by("-created_at")[0].referral
         except IndexError:
             pass
+    
+    def link_responses_to_user(self, user, session_key):
+        for response in self.responses.filter(session_key=session_key, user__isnull=True):
+            response.user = user
+            response.save()
+            user_linked_to_response.send(sender=self, response=response)
     
     def respond(self, request, action_string, user=None, target=None):
         if user is None:

@@ -14,9 +14,7 @@ class SessionJumpingMiddleware(object):
             
             try:
                 referral = Referral.objects.get(code=code)
-                for response in referral.responses.filter(session_key=session_key, user__isnull=True):
-                    response.user = request.user
-                    response.save()
+                referral.link_responses_to_user(request.user, session_key)
             except Referral.DoesNotExist:
                 pass
             

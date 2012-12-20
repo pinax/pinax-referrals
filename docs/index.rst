@@ -31,6 +31,7 @@ Contents
  installation
  usage
  settings
+ signals
  templates
  templatetags
  changelog
