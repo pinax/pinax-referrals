@@ -3,6 +3,12 @@
 ChangeLog
 =========
 
+0.10.0
+------
+
+- ENHANCEMENT: added a signal to provide notifications of when a referred user authenticates
+
+
 0.9.1
 -----
 
