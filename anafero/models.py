@@ -17,8 +17,8 @@ class Referral(models.Model):
     label = models.CharField(max_length=100, blank=True)
     code = models.CharField(max_length=40, unique=True)
     redirect_to = models.CharField(max_length=512)
-    target_content_type = models.ForeignKey(ContentType, null=True)
-    target_object_id = models.PositiveIntegerField(null=True)
+    target_content_type = models.ForeignKey(ContentType, null=True, blank=True)
+    target_object_id = models.PositiveIntegerField(null=True, blank=True)
     target = generic.GenericForeignKey(
         ct_field="target_content_type",
         fk_field="target_object_id"
