@@ -3,6 +3,12 @@
 ChangeLog
 =========
 
+Next
+----
+
+- ENHANCEMENT: made GFK fields on `Referral` blankable
+
+
 0.10.0
 ------
 
