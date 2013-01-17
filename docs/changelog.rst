@@ -82,6 +82,11 @@ Migration from 0.8.1
 - ENHANCEMENT: added a new classmethod on ``Referral`` for getting a referral
   object for a given ``request`` object.
 
+Migration from 0.4
+^^^^^^^^^^^^^^^^^^
+
+    ALTER TABLE "anafero_referral" ADD COLUMN "label" varchar(100) NOT NULL DEFAULT '';
+
 
 0.4
 ---
