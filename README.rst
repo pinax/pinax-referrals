@@ -1,7 +1,7 @@
 anafero
 =======
 
-Provides a site with referrals functionality.
+Provides a Django site with referrals functionality.
 
 
 Documentation
