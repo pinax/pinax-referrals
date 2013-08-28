@@ -3,6 +3,12 @@
 ChangeLog
 =========
 
+1.0.1
+-----
+
+- Fix deprecation warning in urls
+
+
 1.0
 ---
 
