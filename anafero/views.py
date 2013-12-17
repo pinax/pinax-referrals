@@ -1,6 +1,7 @@
+import json
+
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
-from django.utils import simplejson as json
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
