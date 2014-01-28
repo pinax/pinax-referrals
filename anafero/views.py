@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.template import RequestContext
@@ -50,7 +51,10 @@ def process_referral(request, code):
     referral = get_object_or_404(Referral, code=code)
     session_key = ensure_session_key(request)
     referral.respond(request, "RESPONDED")
-    response = redirect(referral.redirect_to)
+    try:
+        response = redirect(request.GET[getattr(settings, 'ANAFERO_REDIRECT_ATTRIBUTE', 'redirect_to')])
+    except KeyError:
+        response = redirect(referral.redirect_to)
     if request.user.is_anonymous():
         response.set_cookie(
             "anafero-referral",
