@@ -35,7 +35,7 @@ class Referral(models.Model):
 
     def __unicode__(self):
         if self.user:
-            return u"%s (%s)" % (self.user, self.code)
+            return u"{0} ({1})".format(self.user, self.code)
         else:
             return self.code
 
@@ -54,7 +54,7 @@ class Referral(models.Model):
         path = reverse("anafero_process_referral", kwargs={"code": self.code})
         domain = Site.objects.get_current().domain
         protocol = "https" if settings.ANAFERO_SECURE_URLS else "http"
-        return "%s://%s%s" % (protocol, domain, path)
+        return "{0}://{1}{2}".format(protocol, domain, path)
 
     @property
     def response_count(self):

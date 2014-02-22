@@ -54,7 +54,7 @@ def process_referral(request, code):
     if request.user.is_anonymous():
         response.set_cookie(
             "anafero-referral",
-            "%s:%s" % (code, session_key)
+            "{0}:{1}".format(code, session_key)
         )
     else:
         response.delete_cookie("anafero-referral")
