@@ -39,6 +39,9 @@ class Referral(models.Model):
         else:
             return self.code
 
+    def is_active(self):
+        return self.expired_at is None or self.expired_at > timezone.now()
+
     @classmethod
     def for_request(cls, request):
         cookie = request.COOKIES.get("anafero-referral")

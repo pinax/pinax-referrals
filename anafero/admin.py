@@ -4,9 +4,9 @@ from anafero.models import Referral, ReferralResponse
 
 
 admin.site.register(Referral,
-    list_display = ["user", "code", "label", "redirect_to", "target_content_type", "target_object_id"],
+    list_display = ["user", "code", "label", "redirect_to", "target_content_type", "target_object_id", "expired_at"],
     readonly_fields = ["code", "created_at"],
-    list_filter = ["target_content_type", "created_at"],
+    list_filter = ["target_content_type", "created_at", "expired_at"],
     search_fields = ["user", "code"]
 )
 
