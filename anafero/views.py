@@ -1,7 +1,8 @@
 import json
 
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, get_object_or_404
+from django.utils import timezone
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
@@ -48,13 +49,15 @@ def create_referral(request):
 
 def process_referral(request, code):
     referral = get_object_or_404(Referral, code=code)
+    if not referral.is_active():
+        raise Http404()
     session_key = ensure_session_key(request)
     referral.respond(request, "RESPONDED")
     response = redirect(referral.redirect_to)
     if request.user.is_anonymous():
         response.set_cookie(
             "anafero-referral",
-            "%s:%s" % (code, session_key)
+            "{0}:{1}".format(code, session_key)
         )
     else:
         response.delete_cookie("anafero-referral")
