@@ -18,20 +18,20 @@ from anafero.utils import ensure_session_key
 def create_referral(request):
     target = None
     ctx = {"url": request.POST.get("redirect_to")}
-    
+
     if request.POST.get("obj_ct_pk") and request.POST.get("obj_pk"):
         ct = ContentType.objects.get(pk=request.POST.get("obj_ct_pk"))
         target = ct.get_object_for_this_type(pk=request.POST.get("obj_pk"))
         ctx["obj"] = target
         ctx["obj_ct"] = ct
-    
+
     referral = Referral.create(
         user=request.user,
         redirect_to=request.POST.get("redirect_to"),
         label=request.POST.get("label", ""),
         target=target
     )
-    
+
     return HttpResponse(
         json.dumps({
             "url": referral.url,
@@ -58,5 +58,5 @@ def process_referral(request, code):
         )
     else:
         response.delete_cookie("anafero-referral")
-    
+
     return response

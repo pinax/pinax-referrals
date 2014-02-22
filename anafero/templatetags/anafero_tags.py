@@ -22,11 +22,11 @@ def create_referral(context, url, obj=None):
 
 
 class ReferralResponsesNode(template.Node):
-    
+
     def __init__(self, user_var, target_var):
         self.user_var = user_var
         self.target_var = target_var
-    
+
     def render(self, context):
         user = self.user_var.resolve(context)
         qs = settings.ANAFERO_RESPONSES_FILTER_CALLBACK(
