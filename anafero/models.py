@@ -9,6 +9,7 @@ from django.contrib.sites.models import Site
 from anafero.conf import settings
 from anafero.signals import user_linked_to_response
 
+
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 
