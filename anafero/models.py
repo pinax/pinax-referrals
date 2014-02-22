@@ -2,7 +2,6 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
-from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.sites.models import Site
@@ -10,10 +9,15 @@ from django.contrib.sites.models import Site
 from anafero.conf import settings
 from anafero.signals import user_linked_to_response
 
+AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
+
 
 class Referral(models.Model):
-    
-    user = models.ForeignKey(User, related_name="referral_codes", null=True)
+
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        related_name="referral_codes",
+        null=True)
     label = models.CharField(max_length=100, blank=True)
     code = models.CharField(max_length=40, unique=True)
     redirect_to = models.CharField(max_length=512)
@@ -134,7 +138,7 @@ class ReferralResponse(models.Model):
     
     referral = models.ForeignKey(Referral, related_name="responses")
     session_key = models.CharField(max_length=40)
-    user = models.ForeignKey(User, null=True)
+    user = models.ForeignKey(AUTH_USER_MODEL, null=True)
     ip_address = models.CharField(max_length=45)
     action = models.CharField(max_length=128)
     
