@@ -7,7 +7,10 @@ class SessionJumpingMiddleware(object):
 
     def process_request(self, request):
         if not hasattr(request, "user"):
-            raise ImproperlyConfigured("django.contrib.auth.middleware.AuthenticationMiddleware middleware must come before anafero.middleware.SessionJumpingMiddleware")
+            raise ImproperlyConfigured(
+                "django.contrib.auth.middleware.AuthenticationMiddleware middleware must come "
+                "before anafero.middleware.SessionJumpingMiddleware"
+            )
         cookie = request.COOKIES.get("anafero-referral")
         if request.user.is_authenticated() and cookie:
             code, session_key = cookie.split(":")
