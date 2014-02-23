@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils import timezone
@@ -35,7 +37,7 @@ class Referral(models.Model):
 
     def __unicode__(self):
         if self.user:
-            return u"%s (%s)" % (self.user, self.code)
+            return "%s (%s)" % (self.user, self.code)
         else:
             return self.code
 
