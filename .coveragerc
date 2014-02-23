@@ -1,0 +1,4 @@
+[run]
+source = anafero
+omit = anafero/tests/*
+branch = 1

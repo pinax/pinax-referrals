@@ -3,6 +3,21 @@ anafero
 
 Provides a Django site with referrals functionality.
 
+.. image:: https://travis-ci.org/eldarion/anafero.png
+    :target: https://travis-ci.org/eldarion/anafero
+
+.. image:: https://coveralls.io/repos/eldarion/anafero/badge.png
+    :target: https://coveralls.io/r/eldarion/anafero
+
+.. image:: https://pypip.in/d/anafero/badge.png
+    :target:  https://pypi.python.org/pypi/anafero/
+
+.. image:: https://pypip.in/v/anafero/badge.png
+    :target:  https://pypi.python.org/pypi/anafero/
+
+.. image:: https://pypip.in/license/anafero/badge.png
+    :target:  https://pypi.python.org/pypi/anafero/
+
 
 Documentation
 -------------
