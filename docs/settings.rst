@@ -23,7 +23,7 @@ Setting this to ``True`` will enable produce urls with ``https`` instead
 of ``http``.
 
 
-ANAFERO_CODE_GENERATOR
+ANAFERO_CODE_GENERATOR_CALLBACK
 ^^^^^^^^^^^^^^^^^^^^^^
 
 :Default: "anafero.utils.generate_code"
