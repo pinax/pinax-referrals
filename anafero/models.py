@@ -12,13 +12,10 @@ from anafero.conf import settings
 from anafero.signals import user_linked_to_response
 
 
-AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
-
-
 class Referral(models.Model):
 
     user = models.ForeignKey(
-        AUTH_USER_MODEL,
+        settings.AUTH_USER_MODEL,
         related_name="referral_codes",
         null=True
     )
@@ -143,7 +140,7 @@ class ReferralResponse(models.Model):
 
     referral = models.ForeignKey(Referral, related_name="responses")
     session_key = models.CharField(max_length=40)
-    user = models.ForeignKey(AUTH_USER_MODEL, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
     ip_address = models.CharField(max_length=45)
     action = models.CharField(max_length=128)
 
