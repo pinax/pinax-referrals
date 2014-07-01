@@ -45,3 +45,11 @@ ANAFERO_ACTION_DISPLAY
 
 Defines a dictionary mapping action codes for responses to user-friendly
 display text. Used by the ``action_display`` template filter.
+
+
+ANAFERO_REDIRECT_ATTRIBUTE
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+:Default: ``redirect_to``
+
+Defines the URL attribute to retrieve dynamic referral redirection URLs from.

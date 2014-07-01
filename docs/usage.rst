@@ -38,6 +38,13 @@ You can also pass in an optional ``label`` kwarg to ``Referral.create`` if
 you wanted to allow your users to create and manage multiple referrals so
 that labeling them became important to keep track of them.
 
+At runtime, you can append the ``redirect_to`` URL parameter to your referral
+URL to dynamically redirect to an alternate destination.
+
+    {{ user.get_profile.referral.url }}?redirect_to=/special/
+
+The URL parameter used can be altered in your :ref:`settings` file.
+
 
 .. _Referral.record_response:
 
