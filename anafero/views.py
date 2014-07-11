@@ -52,7 +52,9 @@ def process_referral(request, code):
     session_key = ensure_session_key(request)
     referral.respond(request, "RESPONDED")
     try:
-        response = redirect(request.GET[getattr(settings, 'ANAFERO_REDIRECT_ATTRIBUTE', 'redirect_to')])
+        response = redirect(request.GET[
+            getattr(settings, "ANAFERO_REDIRECT_ATTRIBUTE", "redirect_to")]
+        )
     except KeyError:
         response = redirect(referral.redirect_to)
     if request.user.is_anonymous():
