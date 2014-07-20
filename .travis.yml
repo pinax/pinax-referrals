@@ -11,10 +11,10 @@ env:
   - DJANGO=Django==1.5.8
 
 install:
-  - pip install $DJANGO --use-mirrors
-  - pip install flake8 --use-mirrors
-  - pip install coverage coveralls --use-mirrors
-  - pip install -e . --use-mirrors
+  - pip install $DJANGO
+  - pip install flake8
+  - pip install coverage coveralls
+  - pip install -e .
 
 script:
   - flake8 --max-line-length=100 --max-complexity=10 --statistics --benchmark anafero
