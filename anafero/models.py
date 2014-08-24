@@ -69,18 +69,18 @@ class Referral(models.Model):
         if target:
             obj, _ = cls.objects.get_or_create(
                 user=user,
-                code=code,
                 redirect_to=redirect_to,
                 label=label,
                 target_content_type=ContentType.objects.get_for_model(target),
-                target_object_id=target.pk
+                target_object_id=target.pk,
+                defaults={'code': code}
             )
         else:
             obj, _ = cls.objects.get_or_create(
                 user=user,
-                code=code,
                 label=label,
                 redirect_to=redirect_to,
+                defaults={'code': code}
             )
 
         return obj
