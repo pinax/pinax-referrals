@@ -4,7 +4,7 @@ Signals
 =======
 
 ``user_linked_to_response`` is a signal that provides the single argument of a ``response``
-object that has just been linked to a user. You can use this to provide further authomatic
+object that has just been linked to a user. You can use this to provide further automatic
 processing within your site, such as adding permissions, etc. to users that signup as a result
 of a referral.
 

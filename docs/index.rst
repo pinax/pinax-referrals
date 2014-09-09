@@ -6,13 +6,13 @@ Provides a site with the ability for users to publish referral links to
 specific pages or objects and then record any responses to those links
 for subsequent use by the site.
 
-For example, one an object detail page, the site builder would use a
+For example, on an object detail page, the site builder would use a
 template tag from anafero to display a referral link that the user of the
 site can send out in a Tweet. Upon clicking that link, a response to that
-referral code will be record as well any other activity that the site
+referral code will be recorded as well as any other activity that the site
 builder wants to track for that session.
 
-It is also possilbe for anonymous referral links/codes to be generated
+It is also possible for anonymous referral links/codes to be generated
 which is useful in marketing promotions and the like.
 
 
