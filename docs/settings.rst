@@ -33,7 +33,7 @@ with a default that will generate a random 40-character alpha-numeric
 string that can also be used as a reference implementation. The callable
 defined by the fully qualified path is passed a single parameter that is
 the class of the referral model, or `Referral`, this is done as a pure
-convience so as to alleviate the need for you to have to import it
+convenience so as to alleviate the need for you to have to import it
 should you need it (and you most likely will if you want to be
 certain of uniqueness).
 
