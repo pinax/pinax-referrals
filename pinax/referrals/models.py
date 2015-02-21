@@ -62,14 +62,16 @@ class Referral(models.Model):
     def response_count(self):
         return self.responses.filter(action="RESPONDED").count()
 
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = settings.PINAX_REFERRALS_CODE_GENERATOR_CALLBACK(Referral)
+        return super(Referral, self).save(*args, **kwargs)
+
     @classmethod
     def create(cls, redirect_to, user=None, label="", target=None):
-        code = settings.PINAX_REFERRALS_CODE_GENERATOR_CALLBACK(cls)
-
         if target:
             obj, _ = cls.objects.get_or_create(
                 user=user,
-                code=code,
                 redirect_to=redirect_to,
                 label=label,
                 target_content_type=ContentType.objects.get_for_model(target),
@@ -78,7 +80,6 @@ class Referral(models.Model):
         else:
             obj, _ = cls.objects.get_or_create(
                 user=user,
-                code=code,
                 label=label,
                 redirect_to=redirect_to,
             )
