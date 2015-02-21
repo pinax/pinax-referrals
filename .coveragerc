@@ -1,4 +1,4 @@
 [run]
-source = anafero
-omit = anafero/tests/*
+source = pinax/referrals
+omit = pinax/referrals/tests/*
 branch = 1

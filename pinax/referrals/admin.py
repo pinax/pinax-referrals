@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from anafero.models import Referral, ReferralResponse
+from .models import Referral, ReferralResponse
 
 
 admin.site.register(

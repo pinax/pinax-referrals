@@ -12,7 +12,7 @@ def generate_code(referral_class):
 
 
 def filter_responses(user=None, referral=None):
-    from anafero.models import ReferralResponse
+    from .models import ReferralResponse
     responses = ReferralResponse.objects.all()
     if user:
         responses = responses.filter(referral__user=user)

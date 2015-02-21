@@ -1,11 +1,3 @@
-PACKAGE = "anafero"
-NAME = "anafero"
-DESCRIPTION = "a referrals app for Django"
-AUTHOR = "Eldarion"
-AUTHOR_EMAIL = "paltman@eldarion.com"
-URL = "http://github.com/eldarion/anafero"
-VERSION = __import__(PACKAGE).__version__
-
 import codecs
 
 from os import path
@@ -18,26 +10,39 @@ def read(*parts):
         return fp.read()
 
 
+NAME = "pinax.referrals"
+DESCRIPTION = "a referrals app for Django"
+AUTHOR = "Pinax Team"
+AUTHOR_EMAIL = "developers@pinaxproject.com"
+URL = "http://github.com/pinax/pinax-referrals"
+VERSION = "2.0.0"
+
+
 setup(
     name=NAME,
     version=VERSION,
     description=DESCRIPTION,
     long_description=read("README.rst"),
     url=URL,
-    license="BSD",
+    license="MIT",
     packages=find_packages(),
     install_requires=[
-        "django-appconf==0.5"
+        "django-appconf==1.0.1"
     ],
+    package_data={
+        "pinax.referrals": [
+            "templates/pinax/referrals/*",
+        ]
+    },
     tests_require=[
-        "Django>=1.4",
+        "Django>=1.5",
     ],
     test_suite="runtests.runtests",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: BSD License",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Framework :: Django",

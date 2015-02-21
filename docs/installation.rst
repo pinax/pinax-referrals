@@ -3,21 +3,21 @@
 Installation
 ============
 
-* To install anafero::
+* To install pinax-referrals::
 
-    pip install anafero
+    pip install pinax-referrals
 
-* Add ``anafero`` to your ``INSTALLED_APPS`` setting::
+* Add ``pinax.referrals`` to your ``INSTALLED_APPS`` setting::
 
     INSTALLED_APPS = (
         # other apps
-        "anafero",
+        "pinax.referrals",
     )
 
 * See the list of :ref:`settings` to modify anafero's
   default behavior and make adjustments for your website.
 
-* Add ``anafero.middleware.SessionJumpingMiddleware`` in order to link up a user who
+* Add ``pinax.referrals.middleware.SessionJumpingMiddleware`` in order to link up a user who
   registers and authenticate after hitting the initial referral link. Make sure
   that it comes after the ``django.contrib.auth.middleware.AuthenticationMiddleware``::
 
@@ -25,12 +25,12 @@ Installation
         ...
         "django.contrib.auth.middleware.AuthenticationMiddleware",
         ...
-        "anafero.middleware.SessionJumpingMiddleware",
+        "pinax.referrals.middleware.SessionJumpingMiddleware",
         ...
     ]
 
-* Lastly you will want to add `anafero.urls` to your urls definition::
+* Lastly you will want to add `pinax.referrals.urls` to your urls definition::
 
     ...
-    url(r"^referrals/", include("anafero.urls")),
+    url(r"^referrals/", include("pinax.referrals.urls")),
     ...

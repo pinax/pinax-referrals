@@ -3,6 +3,13 @@
 ChangeLog
 =========
 
+2.0.0
+-----
+
+- Renamed from `anafero` to `pinax-referrals`
+- Brought up to date with latest Pinax app standards
+
+
 1.0.1
 -----
 

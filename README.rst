@@ -1,33 +1,33 @@
-anafero
+pinax-referrals
 =======
 
 Provides a Django site with referrals functionality.
 
-.. image:: https://img.shields.io/travis/eldarion/anafero.svg
-    :target: https://travis-ci.org/eldarion/anafero
+.. image:: https://img.shields.io/travis/pinax/pinax-referrals.svg
+    :target: https://travis-ci.org/pinax/pinax-referrals
 
-.. image:: https://img.shields.io/coveralls/eldarion/anafero.svg
-    :target: https://coveralls.io/r/eldarion/anafero
+.. image:: https://img.shields.io/coveralls/pinax/pinax-referrals.svg
+    :target: https://coveralls.io/r/pinax/pinax-referrals
 
-.. image:: https://img.shields.io/pypi/dm/anafero.svg
-    :target:  https://pypi.python.org/pypi/anafero/
+.. image:: https://img.shields.io/pypi/dm/pinax-referrals.svg
+    :target:  https://pypi.python.org/pypi/pinax-referrals/
 
-.. image:: https://img.shields.io/pypi/v/anafero.svg
-    :target:  https://pypi.python.org/pypi/anafero/
+.. image:: https://img.shields.io/pypi/v/pinax-referrals.svg
+    :target:  https://pypi.python.org/pypi/pinax-referrals/
 
-.. image:: https://img.shields.io/badge/license-BSD-blue.svg
-    :target:  https://pypi.python.org/pypi/anafero/
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+    :target:  https://pypi.python.org/pypi/pinax-referrals/
 
 
 Documentation
 -------------
 
-Documentation can be found online at http://anafero.readthedocs.org/.
+Documentation can be found online at http://pinax-referrals.readthedocs.org/.
 
 
-Commercial Support
-------------------
+History
+-------
 
-This app, and many others like it, have been built in support of many of Eldarion's
-own sites, and sites of our clients. We would love to help you on your next project
-so get in touch by dropping us a note at info@eldarion.com.
+This project was originally named `anafero` and was created by the team at
+Eldarion. It was later donated to Pianx and at that time renamed to
+`pinax-referrls`.

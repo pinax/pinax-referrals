@@ -3,7 +3,7 @@
 Templates
 =========
 
-`anafero` comes with a single template fragment for rendering a simple form
+`pinax-referrals` comes with a single template fragment for rendering a simple form
 that is used in creating a referral link.
 
 

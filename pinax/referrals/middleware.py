@@ -1,6 +1,6 @@
 from django.core.exceptions import ImproperlyConfigured
 
-from anafero.models import Referral
+from .models import Referral
 
 
 class SessionJumpingMiddleware(object):
@@ -9,9 +9,9 @@ class SessionJumpingMiddleware(object):
         if not hasattr(request, "user"):
             raise ImproperlyConfigured(
                 "django.contrib.auth.middleware.AuthenticationMiddleware middleware must come "
-                "before anafero.middleware.SessionJumpingMiddleware"
+                "before pinax.referrals.middleware.SessionJumpingMiddleware"
             )
-        cookie = request.COOKIES.get("anafero-referral")
+        cookie = request.COOKIES.get("pinax-referral")
         if request.user.is_authenticated() and cookie:
             code, session_key = cookie.split(":")
 
@@ -21,9 +21,9 @@ class SessionJumpingMiddleware(object):
             except Referral.DoesNotExist:
                 pass
 
-            request.user._can_delete_anafero_cookie = True
+            request.user._can_delete_pinax_referral_cookie = True
 
     def process_response(self, request, response):
-        if hasattr(request, "user") and getattr(request.user, "_can_delete_anafero_cookie", False):
-            response.delete_cookie("anafero-referral")
+        if hasattr(request, "user") and getattr(request.user, "_can_delete_pinax_referral_cookie", False):
+            response.delete_cookie("pinax-referral")
         return response

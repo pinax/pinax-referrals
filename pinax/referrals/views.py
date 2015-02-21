@@ -7,11 +7,15 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 
-from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 
-from anafero.models import Referral
-from anafero.utils import ensure_session_key
+try:
+    from account.decorators import login_required
+except ImportError:
+    from django.contrib.auth.decorators import login_required
+
+from .models import Referral
+from .utils import ensure_session_key
 
 
 @login_required
@@ -38,7 +42,7 @@ def create_referral(request):
             "url": referral.url,
             "code": referral.code,
             "html": render_to_string(
-                "anafero/_create_referral_form.html",
+                "pinax/referrals/_create_referral_form.html",
                 ctx,
                 context_instance=RequestContext(request)
             )
@@ -53,16 +57,16 @@ def process_referral(request, code):
     referral.respond(request, "RESPONDED")
     try:
         response = redirect(request.GET[
-            getattr(settings, "ANAFERO_REDIRECT_ATTRIBUTE", "redirect_to")]
+            getattr(settings, "PINAX_REFERRALS_REDIRECT_ATTRIBUTE", "redirect_to")]
         )
     except KeyError:
         response = redirect(referral.redirect_to)
     if request.user.is_anonymous():
         response.set_cookie(
-            "anafero-referral",
+            "pinax-referral",
             "%s:%s" % (code, session_key)
         )
     else:
-        response.delete_cookie("anafero-referral")
+        response.delete_cookie("pinax-referral")
 
     return response

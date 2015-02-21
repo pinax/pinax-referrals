@@ -10,11 +10,11 @@ Referral.create
 
 This is the factory method that the ``create_referral`` view calls but can
 be called directly in case you needed to integrate in a different way with
-anafero.
+pinax-referrals.
 
 For example, you might want to automatically give every user a referral code
 that is emailed to them upon signup. In this case, you could created a one
-to one relationshiop between their ``Profile`` and anafero's ``Referral`` and
+to one relationshiop between their ``Profile`` and pinax-referrals' ``Referral`` and
 create a signal receiver for when the ``Profile`` is created that calls::
 
     referral = Referral.create(
@@ -59,7 +59,7 @@ For example, say you want to record the fact that the user did some site activit
 after clicking on the referral link you tweeted and subsequently decided
 to register and login to the site::
 
-    from anafero.models import Referral
+    from pinax.referrals.models import Referral
     
     
     def my_view(request, **kwargs):

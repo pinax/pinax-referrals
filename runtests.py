@@ -12,8 +12,8 @@ DEFAULT_SETTINGS = dict(
         "django.contrib.auth",
         "django.contrib.contenttypes",
         "django.contrib.sites",
-        "anafero",
-        "anafero.tests"
+        "pinax.referrals",
+        "pinax.referrals.tests"
     ],
     DATABASES={
         "default": {
@@ -23,7 +23,7 @@ DEFAULT_SETTINGS = dict(
     },
     SITE_ID=1,
     MIDDLEWARE_CLASSES=[],
-    ROOT_URLCONF="anafero.tests.urls",
+    ROOT_URLCONF="pinax.referrals.tests.urls",
     SECRET_KEY="notasecret",
 )
 
@@ -42,7 +42,7 @@ def runtests(*test_args):
     try:
         from django.test.runner import DiscoverRunner
         runner_class = DiscoverRunner
-        test_args = ["anafero.tests"]
+        test_args = ["pinax.referrals.tests"]
     except ImportError:
         from django.test.simple import DjangoTestSuiteRunner
         runner_class = DjangoTestSuiteRunner

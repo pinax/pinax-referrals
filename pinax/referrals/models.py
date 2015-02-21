@@ -8,8 +8,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.sites.models import Site
 
-from anafero.conf import settings
-from anafero.signals import user_linked_to_response
+from .conf import settings
+from .signals import user_linked_to_response
 
 
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
@@ -43,7 +43,7 @@ class Referral(models.Model):
 
     @classmethod
     def for_request(cls, request):
-        cookie = request.COOKIES.get("anafero-referral")
+        cookie = request.COOKIES.get("pinax-referral")
         if cookie:
             code, session_key = cookie.split(":")
             try:
@@ -53,9 +53,9 @@ class Referral(models.Model):
 
     @property
     def url(self):
-        path = reverse("anafero_process_referral", kwargs={"code": self.code})
+        path = reverse("pinax_referrals_process_referral", kwargs={"code": self.code})
         domain = Site.objects.get_current().domain
-        protocol = "https" if settings.ANAFERO_SECURE_URLS else "http"
+        protocol = "https" if settings.PINAX_REFERRALS_SECURE_URLS else "http"
         return "%s://%s%s" % (protocol, domain, path)
 
     @property
@@ -64,7 +64,7 @@ class Referral(models.Model):
 
     @classmethod
     def create(cls, redirect_to, user=None, label="", target=None):
-        code = settings.ANAFERO_CODE_GENERATOR_CALLBACK(cls)
+        code = settings.PINAX_REFERRALS_CODE_GENERATOR_CALLBACK(cls)
 
         if target:
             obj, _ = cls.objects.get_or_create(
@@ -117,7 +117,7 @@ class Referral(models.Model):
                 user = None
 
         ip_address = request.META.get(
-            settings.ANAFERO_IP_ADDRESS_META_FIELD,
+            settings.PINAX_REFERRALS_IP_ADDRESS_META_FIELD,
             ""
         )
 
@@ -134,7 +134,7 @@ class Referral(models.Model):
         return ReferralResponse.objects.create(**kwargs)
 
     def filtered_responses(self):
-        return settings.ANAFERO_RESPONSES_FILTER_CALLBACK(
+        return settings.PINAX_REFERRALS_RESPONSES_FILTER_CALLBACK(
             referral=self
         )
 

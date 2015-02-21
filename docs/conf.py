@@ -1,27 +1,23 @@
-import os
-import sys
+import pkg_resources
 
 extensions = []
 templates_path = []
 source_suffix = ".rst"
 master_doc = "index"
-project = u"anafero"
-package = "anafero"
-copyright = u"2013, Eldarion"
+project = u"pinax-referrals"
+package = "pinax.referrals"
+copyright = u"2015, James Tauber and contributors"
 exclude_patterns = ["_build"]
 pygments_style = "sphinx"
 html_theme = "default"
 html_static_path = []
-htmlhelp_basename = "anaferodoc"
+htmlhelp_basename = "pinaxreferralsdoc"
 latex_documents = [(
-    "index", "anafero.tex", u"anafero Documentation", u"Eldarion", "manual"
+    "index", "pinax-referrals.tex", u"pinax-referrals Documentation", u"Pinax", "manual"
 )]
 man_pages = [(
-    "index", "anafero", u"anafero Documentation", [u"Eldarion"], 1
+    "index", "pinax-referrals", u"pinax-referrals Documentation", [u"Pinax"], 1
 )]
 
-sys.path.insert(0, os.pardir)
-m = __import__(package)
-
-version = m.__version__
+version = pkg_resources.get_distribution("pinax-blog").version
 release = version

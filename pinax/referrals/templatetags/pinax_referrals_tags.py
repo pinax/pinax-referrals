@@ -2,13 +2,13 @@ from django import template
 
 from django.contrib.contenttypes.models import ContentType
 
-from anafero.conf import settings
+from ..conf import settings
 
 
 register = template.Library()
 
 
-@register.inclusion_tag("anafero/_create_referral_form.html", takes_context=True)
+@register.inclusion_tag("pinax/referrals/_create_referral_form.html", takes_context=True)
 def create_referral(context, url, obj=None):
     if obj:
         context.update(
@@ -29,7 +29,7 @@ class ReferralResponsesNode(template.Node):
 
     def render(self, context):
         user = self.user_var.resolve(context)
-        qs = settings.ANAFERO_RESPONSES_FILTER_CALLBACK(
+        qs = settings.PINAX_REFERRALS_RESPONSES_FILTER_CALLBACK(
             user=user
         )
         context[self.target_var] = qs
@@ -51,4 +51,4 @@ def referral_responses(parser, token):
 
 @register.filter
 def action_display(value):
-    return settings.ANAFERO_ACTION_DISPLAY.get(value, value)
+    return settings.PINAX_REFERRALS_ACTION_DISPLAY.get(value, value)
