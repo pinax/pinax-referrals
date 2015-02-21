@@ -1,5 +1,5 @@
 pinax-referrals
-=======
+===============
 
 Provides a Django site with referrals functionality.
 

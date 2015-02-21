@@ -10,12 +10,12 @@ def read(*parts):
         return fp.read()
 
 
-NAME = "pinax.referrals"
+NAME = "pinax-referrals"
 DESCRIPTION = "a referrals app for Django"
 AUTHOR = "Pinax Team"
 AUTHOR_EMAIL = "developers@pinaxproject.com"
 URL = "http://github.com/pinax/pinax-referrals"
-VERSION = "2.0.0"
+VERSION = "2.0.1"
 
 
 setup(
