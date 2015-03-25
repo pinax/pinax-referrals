@@ -15,7 +15,7 @@ DESCRIPTION = "a referrals app for Django"
 AUTHOR = "Pinax Team"
 AUTHOR_EMAIL = "developers@pinaxproject.com"
 URL = "http://github.com/pinax/pinax-referrals"
-VERSION = "2.0.3"
+VERSION = "2.1.0"
 
 
 setup(
@@ -51,6 +51,7 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.2",
         "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     zip_safe=False
