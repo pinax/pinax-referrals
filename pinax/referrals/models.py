@@ -6,9 +6,9 @@ from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.sites.models import Site
 
+from .compat import GenericForeignKey
 from .conf import settings
 from .signals import user_linked_to_response
 
