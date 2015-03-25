@@ -1,6 +1,10 @@
-=======
-pinax-referrals
-=======
+# pinax-referrals
+
+!!! note "Pinax Ecosystem"
+    This app was developed as part of the Pinax ecosystem but is just a Django app
+    and can be used independently of other Pinax apps.
+    
+    To learn more about Pinax, see <http://pinaxproject.com/>
 
 Provides a site with the ability for users to publish referral links to
 specific pages or objects and then record any responses to those links
@@ -16,22 +20,6 @@ It is also possible for anonymous referral links/codes to be generated
 which is useful in marketing promotions and the like.
 
 
-Development
------------
+## Development
 
 The source repository can be found at https://github.com/pinax/pinax-referrals
-
-
-Contents
-========
-
-.. toctree::
- :maxdepth: 1
-
- installation
- usage
- settings
- signals
- templates
- templatetags
- changelog

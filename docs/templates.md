@@ -1,18 +1,14 @@
-.. _templates:
+# Templates
 
-Templates
-=========
-
-`pinax-referrals` comes with a single template fragment for rendering a simple form
-that is used in creating a referral link.
+`pinax-referrals` comes with a single template fragment for rendering a simple
+form that is used in creating a referral link.
 
 
-_create_referral_form.html
---------------------------
+## _create_referral_form.html
 
 This is a snippet that renders the form that upon submission will create the
 referral link. By default it is rendered with the class `referral` with the
-following context variables::
+following context variables:
 
     {
         "url": url,
