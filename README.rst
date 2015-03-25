@@ -30,4 +30,4 @@ History
 
 This project was originally named `anafero` and was created by the team at
 Eldarion. It was later donated to Pianx and at that time renamed to
-`pinax-referrls`.
+`pinax-referrals`.
