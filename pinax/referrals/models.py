@@ -3,9 +3,10 @@ from __future__ import unicode_literals
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible
 
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.sites.models import Site
 
 from .conf import settings
@@ -15,6 +16,7 @@ from .signals import user_linked_to_response
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 
+@python_2_unicode_compatible
 class Referral(models.Model):
 
     user = models.ForeignKey(
@@ -28,16 +30,16 @@ class Referral(models.Model):
     redirect_to = models.CharField(max_length=512)
     target_content_type = models.ForeignKey(ContentType, null=True, blank=True)
     target_object_id = models.PositiveIntegerField(null=True, blank=True)
-    target = generic.GenericForeignKey(
+    target = GenericForeignKey(
         ct_field="target_content_type",
         fk_field="target_object_id"
     )
 
     created_at = models.DateTimeField(default=timezone.now)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.user:
-            return "%s (%s)" % (self.user, self.code)
+            return "{} ({})".format(self.user, self.code)
         else:
             return self.code
 
@@ -56,7 +58,7 @@ class Referral(models.Model):
         path = reverse("pinax_referrals_process_referral", kwargs={"code": self.code})
         domain = Site.objects.get_current().domain
         protocol = "https" if settings.PINAX_REFERRALS_SECURE_URLS else "http"
-        return "%s://%s%s" % (protocol, domain, path)
+        return "{}://{}{}".format(protocol, domain, path)
 
     @property
     def response_count(self):
@@ -150,7 +152,7 @@ class ReferralResponse(models.Model):
 
     target_content_type = models.ForeignKey(ContentType, null=True)
     target_object_id = models.PositiveIntegerField(null=True)
-    target = generic.GenericForeignKey(
+    target = GenericForeignKey(
         ct_field="target_content_type",
         fk_field="target_object_id"
     )
