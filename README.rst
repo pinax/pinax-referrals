@@ -3,6 +3,9 @@ pinax-referrals
 
 Provides a Django site with referrals functionality.
 
+.. image:: http://slack.pinaxproject.com/badge.svg
+   :target: http://slack.pinaxproject.com/
+
 .. image:: https://img.shields.io/travis/pinax/pinax-referrals.svg
     :target: https://travis-ci.org/pinax/pinax-referrals
 
