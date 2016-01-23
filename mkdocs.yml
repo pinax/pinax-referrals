@@ -7,6 +7,7 @@ pages:
 - [templates.md, Templates]
 - [templatetags.md, Template Tags]
 - [usage.md, Usage]
+- [migrations.md, Migrations]
 - [changelog.md, Change Log]
 theme: readthedocs
 repo_url: https://github.com/pinax/pinax-referrals
