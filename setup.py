@@ -10,48 +10,38 @@ def read(*parts):
         return fp.read()
 
 
-NAME = "pinax-referrals"
-DESCRIPTION = "a referrals app for Django"
-AUTHOR = "Pinax Team"
-AUTHOR_EMAIL = "developers@pinaxproject.com"
-URL = "http://github.com/pinax/pinax-referrals"
-VERSION = "2.1.0"
-
-
 setup(
-    name=NAME,
-    version=VERSION,
-    description=DESCRIPTION,
+    author="Pinax Team",
+    author_email="developers@pinaxproject.com",
+    description="a referrals app for Django",
+    name="pinax-referrals",
     long_description=read("README.rst"),
-    url=URL,
+    version="2.2.0",
+    url="http://github.com/pinax/pinax-referrals/",
     license="MIT",
     packages=find_packages(),
     install_requires=[
-        "django-appconf==1.0.1"
+        "django-appconf==1.0.1",
+        "Django>=1.8",
     ],
     package_data={
         "pinax.referrals": [
             "templates/pinax/referrals/*",
         ]
     },
-    tests_require=[
-        "Django>=1.5",
-    ],
     test_suite="runtests.runtests",
+    tests_require=[
+    ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
+        "Framework :: Django",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Framework :: Django",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 2.6",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.2",
-        "Programming Language :: Python :: 3.3",
-        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 3",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     zip_safe=False

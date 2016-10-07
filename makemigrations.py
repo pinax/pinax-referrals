@@ -15,6 +15,7 @@ DEFAULT_SETTINGS = dict(
         "pinax.referrals",
         "pinax.referrals.tests"
     ],
+    MIDDLEWARE_CLASSES=[],
     DATABASES={
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -22,40 +23,26 @@ DEFAULT_SETTINGS = dict(
         }
     },
     SITE_ID=1,
-    MIDDLEWARE_CLASSES=[],
     ROOT_URLCONF="pinax.referrals.tests.urls",
     SECRET_KEY="notasecret",
 )
 
 
-def runtests(*test_args):
+def run(*args):
     if not settings.configured:
         settings.configure(**DEFAULT_SETTINGS)
 
-    # Compatibility with Django 1.7's stricter initialization
-    if hasattr(django, "setup"):
-        django.setup()
+    django.setup()
 
     parent = os.path.dirname(os.path.abspath(__file__))
     sys.path.insert(0, parent)
 
-    from django.core import checks
-
-    try:
-        from django.test.runner import DiscoverRunner
-        runner_class = DiscoverRunner
-        test_args = ["pinax.referrals.tests"]
-    except ImportError:
-        from django.test.simple import DjangoTestSuiteRunner
-        runner_class = DjangoTestSuiteRunner
-        test_args = ["tests"]
-
-    checks = checks.run_checks()
-    if checks:
-        sys.exit(checks)
-    failures = runner_class(verbosity=1, interactive=True, failfast=False).run_tests(test_args)
-    sys.exit(failures)
+    django.core.management.call_command(
+        "makemigrations",
+        "referrals",
+        *args
+    )
 
 
 if __name__ == "__main__":
-    runtests(*sys.argv[1:])
+    run(*sys.argv[1:])
