@@ -20,13 +20,15 @@ Add `pinax.referrals.middleware.SessionJumpingMiddleware` in order to link up a
 user who registers and authenticate after hitting the initial referral link.
 Make sure that it comes after the `django.contrib.auth.middleware.AuthenticationMiddleware`:
 
-    MIDDLEWARE_CLASSES = [
+    MIDDLEWARE = [
         ...
         "django.contrib.auth.middleware.AuthenticationMiddleware",
         ...
         "pinax.referrals.middleware.SessionJumpingMiddleware",
         ...
     ]
+
+*Note: use `MIDDLEWARE_CLASSES` instead in case you're still using Django 1.8 or 1.9*
 
 Lastly you will want to add `pinax.referrals.urls` to your urls definition:
 

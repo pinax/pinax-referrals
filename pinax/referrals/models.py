@@ -1,7 +1,12 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.core.urlresolvers import reverse
+from django.db.models.deletion import CASCADE
+
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 
@@ -21,6 +26,7 @@ class Referral(models.Model):
 
     user = models.ForeignKey(
         AUTH_USER_MODEL,
+        on_delete=CASCADE,
         related_name="referral_codes",
         null=True
     )
