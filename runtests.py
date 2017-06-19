@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
-from distutils.version import StrictVersion
+from distutils.version import LooseVersion
 
 import django
 
@@ -34,7 +34,7 @@ DEFAULT_SETTINGS = dict(
     ]
 )
 
-if StrictVersion(django.__version__) < StrictVersion('1.10'):
+if LooseVersion(django.__version__) < LooseVersion('1.10'):
     DEFAULT_SETTINGS['MIDDLEWARE_CLASSES'] = [
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
