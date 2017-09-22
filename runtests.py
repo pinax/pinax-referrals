@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
+from distutils.version import LooseVersion
 
 import django
 
@@ -11,6 +12,7 @@ DEFAULT_SETTINGS = dict(
     INSTALLED_APPS=[
         "django.contrib.auth",
         "django.contrib.contenttypes",
+        "django.contrib.sessions",
         "django.contrib.sites",
         "pinax.referrals",
         "pinax.referrals.tests"
@@ -22,10 +24,30 @@ DEFAULT_SETTINGS = dict(
         }
     },
     SITE_ID=1,
-    MIDDLEWARE_CLASSES=[],
     ROOT_URLCONF="pinax.referrals.tests.urls",
     SECRET_KEY="notasecret",
+    TEMPLATES=[
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'APP_DIRS': True,
+        },
+    ]
 )
+
+if LooseVersion(django.__version__) < LooseVersion('1.10'):
+    DEFAULT_SETTINGS['MIDDLEWARE_CLASSES'] = [
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'pinax.referrals.middleware.SessionJumpingMiddleware',
+    ]
+else:
+    DEFAULT_SETTINGS['MIDDLEWARE'] = [
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'pinax.referrals.middleware.SessionJumpingMiddleware',
+    ]
 
 
 def runtests(*test_args):
