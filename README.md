@@ -55,7 +55,7 @@ user who registers and authenticate after hitting the initial referral link.
 Make sure that it comes after the `django.contrib.auth.middleware.AuthenticationMiddleware`:
 
 ```python
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     ...
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     ...
@@ -64,7 +64,9 @@ MIDDLEWARE_CLASSES = [
 ]
 ```
 
-Lastly, add `pinax.referrals.urls` to your urls definition:
+*Note: use `MIDDLEWARE_CLASSES` instead in case you're still using Django 1.8 or 1.9*
+
+Lastly you will want to add `pinax.referrals.urls` to your urls definition:
 
 ```python
 url(r"^referrals/", include("pinax.referrals.urls")),
@@ -76,7 +78,7 @@ url(r"^referrals/", include("pinax.referrals.urls")),
 
 This is the factory method that the `create_referral` view calls but it can
 be called directly in case you needed to integrate with pinax-referrals in
-a different way. 
+a different way.
 
 For example, you might want to automatically give every user a referral code
 that is emailed to them upon signup. In this case, you could created a one-to-one
