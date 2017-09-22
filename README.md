@@ -64,7 +64,7 @@ MIDDLEWARE_CLASSES = [
 ]
 ```
 
-Lastly you will want to add `pinax.referrals.urls` to your urls definition:
+Lastly, add `pinax.referrals.urls` to your urls definition:
 
 ```python
 url(r"^referrals/", include("pinax.referrals.urls")),
@@ -74,13 +74,13 @@ url(r"^referrals/", include("pinax.referrals.urls")),
 
 ### `Referral.create`
 
-This is the factory method that the `create_referral` view calls but can
-be called directly in case you needed to integrate in a different way with
-pinax-referrals.
+This is the factory method that the `create_referral` view calls but it can
+be called directly in case you needed to integrate with pinax-referrals in
+a different way. 
 
 For example, you might want to automatically give every user a referral code
-that is emailed to them upon signup. In this case, you could created a one
-to one relationshiop between their `Profile` and pinax-referrals' `Referral` and
+that is emailed to them upon signup. In this case, you could created a one-to-one
+relationshiop between their `Profile` and pinax-referrals' `Referral` and
 create a signal receiver for when the `Profile` is created that calls:
 
 ```python
@@ -92,7 +92,7 @@ profile.referral = referral
 profile.save()
 ```
 
-Then you could, in the welcome email that you send them upon signup render
+Then you could, in the welcome email that you send them upon signup, render
 their referral url that they could forward on to other users:
 
 ```django
@@ -101,12 +101,12 @@ their referral url that they could forward on to other users:
 
 The only required parameter for `Referral.create` is `redirect_to`. If
 you don't specify a user it will be recorded as `None`. This can be useful
-if you wanted to attach a relationship between some object in your system
+if you want to attach a relationship between some object in your system
 to a referral that might not have a user associated with it.
 
 You can also pass in an optional `label` kwarg to `Referral.create` if
-you wanted to allow your users to create and manage multiple referrals so
-that labeling them became important to keep track of them.
+you want to allow your users to create and manage multiple referrals as
+labeling them becomes important in order to keep track of them.
 
 At runtime, you can append the `redirect_to` URL parameter to your referral
 URL to dynamically redirect to an alternate destination.
@@ -121,7 +121,7 @@ The URL parameter used can be altered in your [settings](#settings) file.
 ### `Referral.record_response`
 
 The classmethod `record_response` will attempt to see if the current user or
-session has any previous responses to an initial referral and if so will then
+session has any previous responses to an initial referral and, if so, will then
 proceed to record the response action.
 
 For example, say you want to record the fact that the user did some site activity
@@ -157,8 +157,8 @@ the action label.
 
 ### `Referral.referral_for_request`
 
-This class method, will give you a referral object for the given request in
-case you needed to apply any business logic in your project. For example, to
+This class method will give you a referral object for the given request in
+case you need to apply any business logic in your project. For example, to
 do any comparisons on the referral.target with another object you have in
 context for segmenting permissions or authorizations to make your referral
 system more fine grained.
@@ -179,7 +179,7 @@ the ip address of the the respondent.
 
 Defaults to `False`
 
-Setting this to `True` will enable produce urls with `https` instead of `http`.
+Setting this to `True` will produce urls with `https` instead of `http`.
 
 
 ### `PINAX_REFERRALS_CODE_GENERATOR_CALLBACK`
@@ -190,7 +190,7 @@ Externalizes the logic that generates the referral code. `pinax-referrals` ships
 with a default that will generate a random 40-character alpha-numeric
 string that can also be used as a reference implementation. The callable
 defined by the fully qualified path is passed a single parameter that is
-the class of the referral model, or `Referral`, this is done as a pure
+the class of the referral model, or `Referral`. This is done as a pure
 convenience so as to alleviate the need for you to have to import it
 should you need it (and you most likely will if you want to be
 certain of uniqueness).
@@ -277,7 +277,7 @@ referrals to a particular url. In that case you can just do:
 
 This will render a form that is defined in `pinax/referrals/_create_referral_form.html`
 which will POST to a view and return JSON. The intent of this form is that it
-is to be used with an AJAX submission and handler.
+be used with an AJAX submission and handler.
 
 The recommended way is to use `jquery.form` and to do the following:
 
@@ -299,11 +299,11 @@ $(function () {
 
 ### `referral_responses`
 
-This template tag is an assignment tag that given a user sets an context
-variable with a queryset all all responses for all referrals owned by the
+This template tag is an assignment tag that, given a user, sets a context
+variable with a queryset of all responses for all referrals owned by the
 user, in order of when they were created.
 
-The use case for where this is useful is displaying all the activities
+The use case for this is displaying all the activities
 associated with the user's different labeled referrals.
 
 Example:
@@ -349,7 +349,7 @@ Django.
 
 See the [Recap of February Pinax Hangout](http://blog.pinaxproject.com/2016/02/26/recap-february-pinax-hangout/) including a video, or our [How to Contribute](http://pinaxproject.com/pinax/how_to_contribute/) section for an overview on how contributing to Pinax works. For concrete contribution ideas, please see our [Ways to Contribute/What We Need Help With] (http://pinaxproject.com/pinax/ways_to_contribute/) section.
 
-In case of any questions we recommend you join our [Pinax Slack team] (http://slack.pinaxproject.com) and ping us there instead of creating an issue on GitHub. Creating issues on GitHub is of course also valid but we are usually able to help you faster if you ping us in Slack.
+In case of any questions, we recommend you join our [Pinax Slack team] (http://slack.pinaxproject.com) and ping us there instead of creating an issue on GitHub. Creating issues on GitHub is of course also valid but we are usually able to help you faster if you ping us in Slack.
 
 We also highly recommend reading our [Open Source and Self-Care](http://blog.pinaxproject.com/2016/01/19/open-source-and-self-care/)  blog post.
 
