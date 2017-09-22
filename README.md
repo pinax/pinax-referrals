@@ -2,6 +2,8 @@
 
 # Pinax Referrals
 
+[![](http://slack.pinaxproject.com/badge.svg)](http://slack.pinaxproject.com/) [![](https://img.shields.io/travis/pinax/pinax-referrals.svg)](https://travis-ci.org/pinax/pinax-referrals) [![](https://img.shields.io/coveralls/pinax/pinax-referrals.svg)](https://coveralls.io/r/pinax/pinax-referrals) [![](https://img.shields.io/pypi/dm/pinax-referrals.svg)](https://pypi.python.org/pypi/pinax-referrals/) [![](https://img.shields.io/pypi/v/pinax-referrals.svg)](https://pypi.python.org/pypi/pinax-referrals/) [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://pypi.python.org/pypi/pinax-referrals/)
+
 `pinax-referrals` provides a site with the ability for users to
 publish referral links to specific pages or objects and then record
 any responses to those links for subsequent use by the site.
@@ -14,10 +16,6 @@ builder wants to track for that session.
 
 It is also possible for anonymous referral links/codes to be generated
 which is useful in marketing promotions and the like.
-
-## Status
-
-[![](http://slack.pinaxproject.com/badge.svg)](http://slack.pinaxproject.com/) [![](https://img.shields.io/travis/pinax/pinax-referrals.svg)](https://travis-ci.org/pinax/pinax-referrals) [![](https://img.shields.io/coveralls/pinax/pinax-referrals.svg)](https://coveralls.io/r/pinax/pinax-referrals) [![](https://img.shields.io/pypi/dm/pinax-referrals.svg)](https://pypi.python.org/pypi/pinax-referrals/) [![](https://img.shields.io/pypi/v/pinax-referrals.svg)](https://pypi.python.org/pypi/pinax-referrals/) [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://pypi.python.org/pypi/pinax-referrals/)
 
 
 ## Table of Contents
