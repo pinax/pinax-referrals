@@ -15,7 +15,7 @@ setup(
     author_email="developers@pinaxproject.com",
     description="a referrals app for Django",
     name="pinax-referrals",
-    long_description=read("README.rst"),
+    long_description=read("README.md"),
     version="2.2.0",
     url="http://github.com/pinax/pinax-referrals/",
     license="MIT",
