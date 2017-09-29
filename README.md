@@ -1,4 +1,4 @@
-![](http://pinaxproject.com/pinax-design/badges/pinax-referrals.svg)
+![](http://pinaxproject.com/pinax-design/patches/pinax-referrals.svg)
 
 # Pinax Referrals
 
