@@ -28,7 +28,7 @@ which is useful in marketing promotions and the like.
 * [Development](#development)
 * [Change Log](#change-log)
 * [Project History](#history)
-* [About Pinax](#pinax)
+* [About Pinax](#about-pinax)
 
 ## Installation
 
