@@ -1,21 +1,20 @@
 from __future__ import unicode_literals
 
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.sites.models import Site
 from django.db import models
 from django.db.models.deletion import CASCADE
+from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible
+
+from .compat import GenericForeignKey
+from .conf import settings
+from .signals import user_linked_to_response
 
 try:
     from django.urls import reverse
 except ImportError:
     from django.core.urlresolvers import reverse
-from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
-
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.sites.models import Site
-
-from .compat import GenericForeignKey
-from .conf import settings
-from .signals import user_linked_to_response
 
 
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
