@@ -2,7 +2,17 @@
 
 # Pinax Referrals
 
-[![](http://slack.pinaxproject.com/badge.svg)](http://slack.pinaxproject.com/) [![](https://img.shields.io/travis/pinax/pinax-referrals.svg)](https://travis-ci.org/pinax/pinax-referrals) [![](https://img.shields.io/coveralls/pinax/pinax-referrals.svg)](https://coveralls.io/r/pinax/pinax-referrals) [![](https://img.shields.io/pypi/dm/pinax-referrals.svg)](https://pypi.python.org/pypi/pinax-referrals/) [![](https://img.shields.io/pypi/v/pinax-referrals.svg)](https://pypi.python.org/pypi/pinax-referrals/) [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://pypi.python.org/pypi/pinax-referrals/)
+[![](https://img.shields.io/pypi/v/pinax-referrals.svg)](https://pypi.python.org/pypi/pinax-referrals/)
+[![](https://img.shields.io/badge/license-MIT-blue.svg)](https://pypi.python.org/pypi/pinax-referrals/)
+
+[![CircleCi](https://img.shields.io/circleci/project/github/pinax/pinax-referrals.svg)](https://circleci.com/gh/pinax/pinax-referrals)
+[![Codecov](https://img.shields.io/codecov/c/github/pinax/pinax-referrals.svg)](https://codecov.io/gh/pinax/pinax-referrals)
+[![](https://img.shields.io/github/contributors/pinax/pinax-referrals.svg)](https://github.com/pinax/pinax-referrals/graphs/contributors)
+[![](https://img.shields.io/github/issues-pr/pinax/pinax-referrals.svg)](https://github.com/pinax/pinax-referrals/pulls)
+[![](https://img.shields.io/github/issues-pr-closed/pinax/pinax-referrals.svg)](https://github.com/pinax/pinax-referrals/pulls?q=is%3Apr+is%3Aclosed)
+
+[![](http://slack.pinaxproject.com/badge.svg)](http://slack.pinaxproject.com/)
+ 
 
 `pinax-referrals` provides a site with the ability for users to
 publish referral links to specific pages or objects and then record
@@ -361,6 +371,13 @@ In order to foster a kind, inclusive, and harassment-free community, the Pinax P
 
 
 ## Change Log
+
+### 2.3.0
+
+* Add Django 2.0 compatibility testing
+* Drop Django 1.9 and Python 3.3 support
+* Convert CI and coverage to CircleCi and CodeCov
+* Add PyPi-compatible long description
 
 ### 2.0.0
 

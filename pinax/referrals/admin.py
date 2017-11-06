@@ -2,7 +2,6 @@ from django.contrib import admin
 
 from .models import Referral, ReferralResponse
 
-
 admin.site.register(
     Referral,
     list_display=[

@@ -1,9 +1,7 @@
 from django import template
-
 from django.contrib.contenttypes.models import ContentType
 
 from ..conf import settings
-
 
 register = template.Library()
 
