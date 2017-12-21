@@ -17,7 +17,7 @@ class SessionJumpingMiddleware(MIDDLEWARE_BASE_CLASS):
                 "before pinax.referrals.middleware.SessionJumpingMiddleware"
             )
         cookie = request.COOKIES.get("pinax-referral")
-        if request.user.is_authenticated() and cookie:
+        if request.user.is_authenticated and cookie:
             code, session_key = cookie.split(":")
 
             try:

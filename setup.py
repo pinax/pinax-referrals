@@ -10,8 +10,8 @@ Pinax Referrals
 
 .. image:: https://img.shields.io/pypi/v/pinax-referrals.svg
     :target: https://pypi.python.org/pypi/pinax-referrals/
-.. image:: https://img.shields.io/badge/license-MIT-blue.svg
-    :target: https://pypi.python.org/pypi/pinax-referrals/
+
+\ 
 
 .. image:: https://img.shields.io/circleci/project/github/pinax/pinax-referrals.svg
     :target: https://circleci.com/gh/pinax/pinax-referrals
@@ -24,10 +24,15 @@ Pinax Referrals
 .. image:: https://img.shields.io/github/issues-pr-closed/pinax/pinax-referrals.svg
     :target: https://github.com/pinax/pinax-referrals/pulls?q=is%3Apr+is%3Aclosed
 
+\ 
+
 .. image:: http://slack.pinaxproject.com/badge.svg
     :target: http://slack.pinaxproject.com/
-    
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+    :target: https://pypi.python.org/pypi/pinax-referrals/
 
+\ 
+    
 ``pinax-referrals`` provides a site with the ability for users to
 publish referral links to specific pages or objects and then record
 any responses to those links for subsequent use by the site.
@@ -41,12 +46,16 @@ builder wants to track for that session.
 It is also possible for anonymous referral links/codes to be generated
 which is useful in marketing promotions and the like.
 
-
 Supported Django and Python Versions
 ------------------------------------
 
-* Django 1.8, 1.10, 1.11, and 2.0
-* Python 2.7, 3.4, 3.5, and 3.6
++-----------------+-----+-----+-----+-----+
+| Django / Python | 2.7 | 3.4 | 3.5 | 3.6 |
++=================+=====+=====+=====+=====+
+|  1.11           |  *  |  *  |  *  |  *  |
++-----------------+-----+-----+-----+-----+
+|  2.0            |     |  *  |  *  |  *  |
++-----------------+-----+-----+-----+-----+
 """
 
 setup(
@@ -55,7 +64,7 @@ setup(
     description="a referrals app for Django",
     name="pinax-referrals",
     long_description=LONG_DESCRIPTION,
-    version="2.3.0",
+    version="3.1.0",
     url="http://github.com/pinax/pinax-referrals/",
     license="MIT",
     packages=find_packages(),
@@ -75,8 +84,6 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Framework :: Django",
-        'Framework :: Django :: 1.8',
-        'Framework :: Django :: 1.10',
         'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.0',
         "Intended Audience :: Developers",

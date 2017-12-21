@@ -3,7 +3,6 @@
 # Pinax Referrals
 
 [![](https://img.shields.io/pypi/v/pinax-referrals.svg)](https://pypi.python.org/pypi/pinax-referrals/)
-[![](https://img.shields.io/badge/license-MIT-blue.svg)](https://pypi.python.org/pypi/pinax-referrals/)
 
 [![CircleCi](https://img.shields.io/circleci/project/github/pinax/pinax-referrals.svg)](https://circleci.com/gh/pinax/pinax-referrals)
 [![Codecov](https://img.shields.io/codecov/c/github/pinax/pinax-referrals.svg)](https://codecov.io/gh/pinax/pinax-referrals)
@@ -12,7 +11,36 @@
 [![](https://img.shields.io/github/issues-pr-closed/pinax/pinax-referrals.svg)](https://github.com/pinax/pinax-referrals/pulls?q=is%3Apr+is%3Aclosed)
 
 [![](http://slack.pinaxproject.com/badge.svg)](http://slack.pinaxproject.com/)
+[![](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
  
+## Table of Contents
+
+* [About Pinax](#about-pinax)
+* [Overview](#overview)
+  * [History](#history)
+  * [Supported Django and Python versions](#supported-django-and-python-versions)
+* [Documentation](#documentation)
+  * [Installation](#installation)
+  * [Usage](#usage)
+  * [Settings](#settings)
+  * [Signals](#signals)
+  * [Templates](#templates)
+  * [Template Tags and Filters](#template-tags-and-filters)
+  * [Development](#development)
+* [Change Log](#change-log)
+* [Contribute](#contribute)
+* [Code of Conduct](#code-of-conduct)
+* [Connect with Pinax](#connect-with-pinax)
+* [License](#license)
+
+## About Pinax
+
+Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable
+Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
+
+## pinax-referrals
+
+### Overview
 
 `pinax-referrals` provides a site with the ability for users to
 publish referral links to specific pages or objects and then record
@@ -27,20 +55,22 @@ builder wants to track for that session.
 It is also possible for anonymous referral links/codes to be generated
 which is useful in marketing promotions and the like.
 
+#### History
 
-## Table of Contents
+This project was originally named `anafero` and was created by the team at Eldarion. It was later donated to Pinax and at that time renamed to
+``pinax-referrals``.
 
-* [Installation](#installation)
-* [Usage](#usage)
-* [Settings](#settings)
-* [Signals](#signals)
-* [Templates](#templates)
-* [Development](#development)
-* [Change Log](#change-log)
-* [Project History](#history)
-* [About Pinax](#about-pinax)
+#### Supported Django and Python versions
 
-## Installation
+Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
+--------------- | --- | --- | --- | ---
+1.11 |  *  |  *  |  *  |  *  
+2.0  |     |  *  |  *  |  *
+
+
+## Documentation
+
+### Installation
 
 To install pinax-referrals:
 
@@ -82,9 +112,9 @@ Lastly you will want to add `pinax.referrals.urls` to your urls definition:
 url(r"^referrals/", include("pinax.referrals.urls")),
 ```
 
-## Usage
+### Usage
 
-### `Referral.create`
+#### `Referral.create`
 
 This is the factory method that the `create_referral` view calls but it can
 be called directly in case you needed to integrate with pinax-referrals in
@@ -129,8 +159,7 @@ URL to dynamically redirect to an alternate destination.
 
 The URL parameter used can be altered in your [settings](#settings) file.
 
-
-### `Referral.record_response`
+#### `Referral.record_response`
 
 The classmethod `record_response` will attempt to see if the current user or
 session has any previous responses to an initial referral and, if so, will then
@@ -166,8 +195,7 @@ This will record a generic foreign key to `some_object` that you can use elsewhe
 to identify activity from your referral at a deeper level than just based on
 the action label.
 
-
-### `Referral.referral_for_request`
+#### `Referral.referral_for_request`
 
 This class method will give you a referral object for the given request in
 case you need to apply any business logic in your project. For example, to
@@ -175,26 +203,22 @@ do any comparisons on the referral.target with another object you have in
 context for segmenting permissions or authorizations to make your referral
 system more fine grained.
 
+### Settings
 
-
-## Settings
-
-### `PINAX_REFERRALS_IP_ADDRESS_META_FIELD`
+#### `PINAX_REFERRALS_IP_ADDRESS_META_FIELD`
 
 Defaults to `"HTTP_X_FORWARDED_FOR"`
 
 This is the header value that is retrieved from `request.META` to record
 the ip address of the the respondent.
 
-
-### `PINAX_REFERRALS_SECURE_URLS`
+#### `PINAX_REFERRALS_SECURE_URLS`
 
 Defaults to `False`
 
 Setting this to `True` will produce urls with `https` instead of `http`.
 
-
-### `PINAX_REFERRALS_CODE_GENERATOR_CALLBACK`
+#### `PINAX_REFERRALS_CODE_GENERATOR_CALLBACK`
 
 Defaults to `"pinax.referrals.utils.generate_code"`
 
@@ -207,22 +231,20 @@ convenience so as to alleviate the need for you to have to import it
 should you need it (and you most likely will if you want to be
 certain of uniqueness).
 
-
-### `PINAX_REFERRALS_ACTION_DISPLAY`
+#### `PINAX_REFERRALS_ACTION_DISPLAY`
 
 Defaults to `{"RESPONDED": "Clicked on referral link"}`
 
 Defines a dictionary mapping action codes for responses to user-friendly
 display text. Used by the `action_display` template filter.
 
-
-### `PINAX_REFERRALS_REDIRECT_ATTRIBUTE`
+#### `PINAX_REFERRALS_REDIRECT_ATTRIBUTE`
 
 Defaults to `redirect_to`
 
 Defines the URL attribute to retrieve dynamic referral redirection URLs from.
 
-## Signals
+### Signals
 
 `user_linked_to_response` is a signal that provides the single argument of a
 `response` object that has just been linked to a user. You can use this to
@@ -238,13 +260,12 @@ def handle_user_linked_to_response(sender, response, **kwargs):
         pass  # do something with response.user and response.referral.target (object that referral was linked to)
 ```
 
-## Templates
+### Templates
 
 `pinax-referrals` comes with a single template fragment for rendering a simple
 form that is used in creating a referral link.
 
-
-### `_create_referral_form.html`
+#### `_create_referral_form.html`
 
 This is a snippet that renders the form that upon submission will create the
 referral link. By default it is rendered with the class `referral` with the
@@ -261,10 +282,9 @@ following context variables:
 or if no object was passed into the `create_referral` template tag then
 the context would simply blank for `obj` and `obj_ct`.
 
+### Template Tags and Filters
 
-## Template Tags and Filters
-
-### `create_referral`
+#### `create_referral`
 
 In order to use `pinax-referrals` in your project you will use the
 `create_referral` template tag wherever you'd like a user to be able to get a
@@ -309,7 +329,7 @@ $(function () {
 });
 ```
 
-### `referral_responses`
+#### `referral_responses`
 
 This template tag is an assignment tag that, given a user, sets a context
 variable with a queryset of all responses for all referrals owned by the
@@ -329,7 +349,7 @@ Example:
 {% endfor %}
 ```
 
-### `action_display`
+#### `action_display`
 
 This filter converts a response code into a user friendly display of what that
 code means. The definitions exist in the setting `PINAX_REFERRALS_ACTION_DISPLAY`.
@@ -342,10 +362,9 @@ code means. The definitions exist in the setting `PINAX_REFERRALS_ACTION_DISPLAY
 </p>
 ```
 
+### Development
 
-## Development
-
-### Migrations
+#### Migrations
 
 If you need to make migrations for pinax-referrals, run:
 
@@ -357,22 +376,14 @@ You may need to do this if you use a custom user model and upgrade
 Django.
 
 
-### Contribute
-
-See the [Recap of February Pinax Hangout](http://blog.pinaxproject.com/2016/02/26/recap-february-pinax-hangout/) including a video, or our [How to Contribute](http://pinaxproject.com/pinax/how_to_contribute/) section for an overview on how contributing to Pinax works. For concrete contribution ideas, please see our [Ways to Contribute/What We Need Help With] (http://pinaxproject.com/pinax/ways_to_contribute/) section.
-
-In case of any questions, we recommend you join our [Pinax Slack team] (http://slack.pinaxproject.com) and ping us there instead of creating an issue on GitHub. Creating issues on GitHub is of course also valid but we are usually able to help you faster if you ping us in Slack.
-
-We also highly recommend reading our [Open Source and Self-Care](http://blog.pinaxproject.com/2016/01/19/open-source-and-self-care/)  blog post.
-
-### Code of Conduct
-
-In order to foster a kind, inclusive, and harassment-free community, the Pinax Project has a [code of conduct](http://pinaxproject.com/pinax/code_of_conduct/). We ask you to treat everyone as a smart human programmer that shares an interest in Python, Django, and Pinax with you.
-
-
 ## Change Log
 
-### 2.3.0
+### 3.1.0
+
+* Standardize documentation layout
+* Drop Django v1.8, v1.10 support
+
+### 3.0.0
 
 * Add Django 2.0 compatibility testing
 * Drop Django 1.9 and Python 3.3 support
@@ -384,26 +395,21 @@ In order to foster a kind, inclusive, and harassment-free community, the Pinax P
 * Renamed from `anafero` to `pinax-referrals`
 * Brought up to date with latest Pinax app standards
 
-
 ### 1.0.1
 
 * Fix deprecation warning in urls
-
 
 ### 1.0
 
 * ENHANCEMENT: made GFK fields on `Referral` blankable
 
-
 ### 0.10.0
 
 * ENHANCEMENT: added a signal to provide notifications of when a referred user authenticates
 
-
 ### 0.9.1
 
 * BUG: Fix issue where target response is None
-
 
 ### 0.9
 
@@ -415,41 +421,33 @@ In order to foster a kind, inclusive, and harassment-free community, the Pinax P
      ADD COLUMN "target_content_type_id" integer REFERENCES "django_content_type" ("id") DEFERRABLE INITIALLY DEFERRED,
      ADD COLUMN "target_object_id" integer;
 
-
 ### 0.8.1
 
 * ENHANCEMENT: switched over to use `django.utils.timezone.now` instead of `datetime.datetime.now`
-
 
 ### 0.8
 
 * FEATURE: added ability to override filtering of responses
 
-
 ### 0.7
 
 * ENHANCEMENT: Made admin a bit more usable
-
 
 ### 0.6.1
 
 * ENHANCEMENT: Rewrote ``referral_responses`` to run on Django 1.3
 
-
 ### 0.6
 
 * ENHANCEMENT: send full context to the ``create_referral`` template tag
-
 
 ### 0.5.2
 
 * BUG: Fixed a stupid mistake
 
-
 ### 0.5.1
 
 * BUG: fixed an issue with sessions in Django 1.4
-
 
 ### 0.5
 
@@ -464,7 +462,6 @@ In order to foster a kind, inclusive, and harassment-free community, the Pinax P
 
     ALTER TABLE "anafero_referral" ADD COLUMN "label" varchar(100) NOT NULL DEFAULT '';
 
-
 ### 0.4
 
 * FEATURE: Add ability to define code generators external to anafero
@@ -472,17 +469,14 @@ In order to foster a kind, inclusive, and harassment-free community, the Pinax P
   cases when `request.user` isn't set yet (e.g. during signup)
 * FEATURE: Add ability to get a referral object from a request
 
-
 ### 0.3
 
 * FEATURE: changed user on Referral to be nullable, thus enabling anonymous or
   site administered referral codes
 
-
 ### 0.2.1
 
 * BUG: fixed target not being set in the `create_referral` ajax view
-
 
 ### 0.2
 
@@ -502,23 +496,37 @@ In order to foster a kind, inclusive, and harassment-free community, the Pinax P
 * BUG: make sure to set a session value to prevent session key from changing
   with each request
 
-
 ### 0.1
 
 * initial release
 
 
-## History
+## Contribute
 
-This project was originally named `anafero` and was created by the team at Eldarion. It was later donated to Pinax and at that time renamed to
-``pinax-referrals``.
+For an overview on how contributing to Pinax works read this [blog post](http://blog.pinaxproject.com/2016/02/26/recap-february-pinax-hangout/)
+and watch the included video, or read our [How to Contribute](http://pinaxproject.com/pinax/how_to_contribute/) section.
+For concrete contribution ideas, please see our
+[Ways to Contribute/What We Need Help With](http://pinaxproject.com/pinax/ways_to_contribute/) section.
+
+In case of any questions we recommend you join our [Pinax Slack team](http://slack.pinaxproject.com)
+and ping us there instead of creating an issue on GitHub. Creating issues on GitHub is of course
+also valid but we are usually able to help you faster if you ping us in Slack.
+
+We also highly recommend reading our blog post on [Open Source and Self-Care](http://blog.pinaxproject.com/2016/01/19/open-source-and-self-care/).
+
+## Code of Conduct
+
+In order to foster a kind, inclusive, and harassment-free community, the Pinax Project
+has a [code of conduct](http://pinaxproject.com/pinax/code_of_conduct/).
+We ask you to treat everyone as a smart human programmer that shares an interest in Python, Django, and Pinax with you.
 
 
-## About Pinax
+## Connect with Pinax
 
-Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
+For updates and news regarding the Pinax Project, please follow us on Twitter [@pinaxproject](https://twitter.com/pinaxproject)
+and check out our [Pinax Project blog](http://blog.pinaxproject.com).
 
-The Pinax documentation is available at http://pinaxproject.com/pinax/. If you would like to help us improve our documentation or write more documentation, please join our Pinax Project Slack team and let us know!
 
-For updates and news regarding the Pinax Project, please follow us on Twitter at @pinaxproject and check out our blog http://blog.pinaxproject.com.
+## License
 
+Copyright (c) 2012-2018 James Tauber and contributors under the [MIT license](https://opensource.org/licenses/MIT).
