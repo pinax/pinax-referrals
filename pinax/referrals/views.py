@@ -54,7 +54,7 @@ def process_referral(request, code):
         )
     except KeyError:
         response = redirect(referral.redirect_to)
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         response.set_cookie(
             "pinax-referral",
             "%s:%s" % (code, session_key)
