@@ -1,5 +1,6 @@
 from setuptools import find_packages, setup
 
+VERSION = "3.1.0"
 LONG_DESCRIPTION = """
 .. image:: http://pinaxproject.com/pinax-design/patches/pinax-referrals.svg
     :target: https://pypi.python.org/pypi/pinax-referrals/
@@ -64,7 +65,7 @@ setup(
     description="a referrals app for Django",
     name="pinax-referrals",
     long_description=LONG_DESCRIPTION,
-    version="3.1.0",
+    version=VERSION,
     url="http://github.com/pinax/pinax-referrals/",
     license="MIT",
     packages=find_packages(),
