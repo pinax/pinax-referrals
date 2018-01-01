@@ -17,7 +17,6 @@
 
 * [About Pinax](#about-pinax)
 * [Overview](#overview)
-  * [History](#history)
   * [Supported Django and Python versions](#supported-django-and-python-versions)
 * [Documentation](#documentation)
   * [Installation](#installation)
@@ -28,6 +27,7 @@
   * [Template Tags and Filters](#template-tags-and-filters)
   * [Development](#development)
 * [Change Log](#change-log)
+* [History](#history)
 * [Contribute](#contribute)
 * [Code of Conduct](#code-of-conduct)
 * [Connect with Pinax](#connect-with-pinax)
@@ -55,11 +55,6 @@ builder wants to track for that session.
 It is also possible for anonymous referral links/codes to be generated
 which is useful in marketing promotions and the like.
 
-#### History
-
-This project was originally named `anafero` and was created by the team at Eldarion. It was later donated to Pinax and at that time renamed to
-``pinax-referrals``.
-
 #### Supported Django and Python versions
 
 Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
@@ -81,10 +76,10 @@ To install pinax-referrals:
 Add `pinax.referrals` to your `INSTALLED_APPS` setting:
 
 ```python
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     # other apps
     "pinax.referrals",
-)
+]
 ```
 
 See the list of [settings](#settings) to modify `pinax-referrals`'s default
@@ -96,20 +91,20 @@ Make sure that it comes after the `django.contrib.auth.middleware.Authentication
 
 ```python
 MIDDLEWARE = [
-    ...
+    # other middleware
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    ...
     "pinax.referrals.middleware.SessionJumpingMiddleware",
     ...
 ]
 ```
 
-*Note: use `MIDDLEWARE_CLASSES` instead in case you're still using Django 1.8 or 1.9*
-
-Lastly you will want to add `pinax.referrals.urls` to your urls definition:
+Lastly add `pinax.referrals.urls` to your urls definition:
 
 ```python
-url(r"^referrals/", include("pinax.referrals.urls")),
+urlpatterns = [
+    # other urls
+    url(r"^referrals/", include("pinax.referrals.urls", namespace="pinax_referrals")),
+]
 ```
 
 ### Usage
@@ -137,8 +132,8 @@ profile.save()
 Then you could, in the welcome email that you send them upon signup, render
 their referral url that they could forward on to other users:
 
-```django
-{{ user.get_profile.referral.url }}
+```djangotemplate
+    {{ user.get_profile.referral.url }}
 ```
 
 The only required parameter for `Referral.create` is `redirect_to`. If
@@ -290,7 +285,7 @@ In order to use `pinax-referrals` in your project you will use the
 `create_referral` template tag wherever you'd like a user to be able to get a
 referral link to a page or a particular object:
 
-```django
+```djangotemplate
 {% load pinax_referrals_tags %}
 
 {% create_referral object.get_absolute_url object %}
@@ -299,7 +294,7 @@ referral link to a page or a particular object:
 The use of `object` in this case is optional if you just want to record
 referrals to a particular url. In that case you can just do:
 
-```django
+```djangotemplate
 {% load pinax_referrals_tags %}
 
 {% url my_named_url as myurl %}
@@ -340,7 +335,7 @@ associated with the user's different labeled referrals.
 
 Example:
 
-```django
+```djangotemplate
 {% load pinax_referrals_tags %}
 {% referral_responses user as responses %}
 
@@ -354,7 +349,7 @@ Example:
 This filter converts a response code into a user friendly display of what that
 code means. The definitions exist in the setting `PINAX_REFERRALS_ACTION_DISPLAY`.
 
-```django
+```djangotemplate
 {% load pinax_referrals_tags %}
 
 <p>
@@ -380,6 +375,7 @@ Django.
 
 ### 3.1.0
 
+* Add URL namespacing
 * Standardize documentation layout
 * Drop Django v1.8, v1.10 support
 
@@ -435,11 +431,11 @@ Django.
 
 ### 0.6.1
 
-* ENHANCEMENT: Rewrote ``referral_responses`` to run on Django 1.3
+* ENHANCEMENT: Rewrote `referral_responses` to run on Django 1.3
 
 ### 0.6
 
-* ENHANCEMENT: send full context to the ``create_referral`` template tag
+* ENHANCEMENT: send full context to the `create_referral` template tag
 
 ### 0.5.2
 
@@ -453,10 +449,10 @@ Django.
 
 * FEATURE: added ability to label referrals
 * ENHANCEMENT: added support for bootstrap-ajax.js
-* FEATURE: added a ``referral_responses`` assignment template tag
-* FEATURE: added an ``activity_display`` template filter
-* ENHANCEMENT: added a new classmethod on ``Referral`` for getting a referral
-  object for a given ``request`` object.
+* FEATURE: added a `referral_responses` assignment template tag
+* FEATURE: added an `activity_display` template filter
+* ENHANCEMENT: added a new classmethod on `Referral` for getting a referral
+  object for a given `request` object.
 
 ### Migration from 0.4
 
@@ -499,6 +495,12 @@ Django.
 ### 0.1
 
 * initial release
+
+
+## History
+
+This project was originally named `anafero` and was created by the team at Eldarion. It was later donated to Pinax and at that time renamed to
+`pinax-referrals`.
 
 
 ## Contribute

@@ -1,4 +1,4 @@
-<form class="referral" action="{% url "pinax_referrals_create_referral" %}" method="post">
+<form class="referral" action="{% url "pinax_referrals:create_referral" %}" method="post">
     {% csrf_token %}
     <input type="hidden" name="redirect_to" id="redirect_to" value="{{ url }}" />
     <input type="hidden" name="obj_ct_pk" id="obj_ct_pk" value="{{ obj_ct.pk }}" />

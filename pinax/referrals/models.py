@@ -60,7 +60,7 @@ class Referral(models.Model):
 
     @property
     def url(self):
-        path = reverse("pinax_referrals_process_referral", kwargs={"code": self.code})
+        path = reverse("pinax_referrals:process_referral", kwargs={"code": self.code})
         domain = Site.objects.get_current().domain
         protocol = "https" if settings.PINAX_REFERRALS_SECURE_URLS else "http"
         return "{}://{}{}".format(protocol, domain, path)
