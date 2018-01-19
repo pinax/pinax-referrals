@@ -72,8 +72,8 @@ Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
 
 To install pinax-referrals:
 
-```
- pip install pinax-referrals
+```shell
+$ pip install pinax-referrals
 ```
 
 Add `pinax.referrals` to your `INSTALLED_APPS` setting:
@@ -135,7 +135,7 @@ profile.save()
 Then you could, in the welcome email that you send them upon signup, render
 their referral url that they could forward on to other users:
 
-```djangotemplate
+```django
     {{ user.get_profile.referral.url }}
 ```
 
@@ -288,7 +288,7 @@ In order to use `pinax-referrals` in your project you will use the
 `create_referral` template tag wherever you'd like a user to be able to get a
 referral link to a page or a particular object:
 
-```djangotemplate
+```django
 {% load pinax_referrals_tags %}
 
 {% create_referral object.get_absolute_url object %}
@@ -297,7 +297,7 @@ referral link to a page or a particular object:
 The use of `object` in this case is optional if you just want to record
 referrals to a particular url. In that case you can just do:
 
-```djangotemplate
+```django
 {% load pinax_referrals_tags %}
 
 {% url my_named_url as myurl %}
@@ -338,7 +338,7 @@ associated with the user's different labeled referrals.
 
 Example:
 
-```djangotemplate
+```django
 {% load pinax_referrals_tags %}
 {% referral_responses user as responses %}
 
@@ -352,7 +352,7 @@ Example:
 This filter converts a response code into a user friendly display of what that
 code means. The definitions exist in the setting `PINAX_REFERRALS_ACTION_DISPLAY`.
 
-```djangotemplate
+```django
 {% load pinax_referrals_tags %}
 
 <p>
@@ -366,7 +366,7 @@ code means. The definitions exist in the setting `PINAX_REFERRALS_ACTION_DISPLAY
 
 If you need to make migrations for pinax-referrals, run:
 
-```
+```python
 python manage.py makemigrations referrals
 ```
 
