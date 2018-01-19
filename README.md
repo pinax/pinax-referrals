@@ -13,6 +13,7 @@
 [![](http://slack.pinaxproject.com/badge.svg)](http://slack.pinaxproject.com/)
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
  
+ 
 ## Table of Contents
 
 * [About Pinax](#about-pinax)
@@ -33,10 +34,12 @@
 * [Connect with Pinax](#connect-with-pinax)
 * [License](#license)
 
+
 ## About Pinax
 
 Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable
 Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
+
 
 ## pinax-referrals
 
@@ -515,6 +518,7 @@ and ping us there instead of creating an issue on GitHub. Creating issues on Git
 also valid but we are usually able to help you faster if you ping us in Slack.
 
 We also highly recommend reading our blog post on [Open Source and Self-Care](http://blog.pinaxproject.com/2016/01/19/open-source-and-self-care/).
+
 
 ## Code of Conduct
 
