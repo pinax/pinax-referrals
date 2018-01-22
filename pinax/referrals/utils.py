@@ -1,6 +1,6 @@
-from django.core.exceptions import ImproperlyConfigured
+import importlib
 
-from .compat import importlib
+from django.core.exceptions import ImproperlyConfigured
 
 
 def ensure_session_key(request):

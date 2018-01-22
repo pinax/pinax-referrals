@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-VERSION = "3.1.0"
+VERSION = "3.0.0"
 LONG_DESCRIPTION = """
 .. image:: http://pinaxproject.com/pinax-design/patches/pinax-referrals.svg
     :target: https://pypi.python.org/pypi/pinax-referrals/
@@ -69,18 +69,11 @@ setup(
     url="http://github.com/pinax/pinax-referrals/",
     license="MIT",
     packages=find_packages(),
-    install_requires=[
-        "django-appconf>=1.0.1",
-        "django>=1.8",
-    ],
     package_data={
         "pinax.referrals": [
             "templates/pinax/referrals/*",
         ]
     },
-    test_suite="runtests.runtests",
-    tests_require=[
-    ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
@@ -98,6 +91,13 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
+    install_requires=[
+        "django>=1.11",
+        "django-appconf>=1.0.1",
+    ],
+    test_suite="runtests.runtests",
+    tests_require=[
     ],
     zip_safe=False
 )

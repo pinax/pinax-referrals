@@ -2,7 +2,7 @@ all: init test
 
 init:
 	python setup.py develop
-	pip install tox coverage Sphinx
+	pip install tox coverage
 
 test:
 	coverage erase

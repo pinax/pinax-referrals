@@ -43,6 +43,7 @@ Django apps, themes, and starter project templates. This collection can be found
 
 ## pinax-referrals
 
+
 ### Overview
 
 `pinax-referrals` provides a site with the ability for users to
@@ -68,12 +69,13 @@ Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
 
 ## Documentation
 
+
 ### Installation
 
 To install pinax-referrals:
 
 ```shell
-$ pip install pinax-referrals
+    $ pip install pinax-referrals
 ```
 
 Add `pinax.referrals` to your `INSTALLED_APPS` setting:
@@ -97,7 +99,6 @@ MIDDLEWARE = [
     # other middleware
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "pinax.referrals.middleware.SessionJumpingMiddleware",
-    ...
 ]
 ```
 
@@ -109,6 +110,7 @@ urlpatterns = [
     url(r"^referrals/", include("pinax.referrals.urls", namespace="pinax_referrals")),
 ]
 ```
+
 
 ### Usage
 
@@ -172,9 +174,8 @@ from pinax.referrals.models import Referral
 
 
 def my_view(request, **kwargs):
-    ...
+    # other code
     referral_response = Referral.record_response(request, "SOME_ACTION")
-    ...
 ```
 
 In this case the `referral_response` will be None if the user on the request
@@ -200,6 +201,7 @@ case you need to apply any business logic in your project. For example, to
 do any comparisons on the referral.target with another object you have in
 context for segmenting permissions or authorizations to make your referral
 system more fine grained.
+
 
 ### Settings
 
@@ -242,6 +244,7 @@ Defaults to `redirect_to`
 
 Defines the URL attribute to retrieve dynamic referral redirection URLs from.
 
+
 ### Signals
 
 `user_linked_to_response` is a signal that provides the single argument of a
@@ -279,6 +282,7 @@ following context variables:
 
 or if no object was passed into the `create_referral` template tag then
 the context would simply blank for `obj` and `obj_ct`.
+
 
 ### Template Tags and Filters
 
@@ -360,27 +364,21 @@ code means. The definitions exist in the setting `PINAX_REFERRALS_ACTION_DISPLAY
 </p>
 ```
 
+
 ### Development
 
 #### Migrations
 
 If you need to make migrations for pinax-referrals, run:
 
-```python
-python manage.py makemigrations referrals
+```shell
+    $ python manage.py makemigrations referrals
 ```
 
-You may need to do this if you use a custom user model and upgrade
-Django.
+You may need to do this if you use a custom user model and upgrade Django.
 
 
 ## Change Log
-
-### 3.1.0
-
-* Add URL namespacing
-* Standardize documentation layout
-* Drop Django v1.8, v1.10 support
 
 ### 3.0.0
 
@@ -388,6 +386,11 @@ Django.
 * Drop Django 1.9 and Python 3.3 support
 * Convert CI and coverage to CircleCi and CodeCov
 * Add PyPi-compatible long description
+* Add URL namespacing
+* Standardize documentation layout
+* Drop Django v1.8, v1.10 support
+* Update installation requirements for django>=1.11
+* Remove unused doc build support
 
 ### 2.0.0
 

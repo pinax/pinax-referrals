@@ -24,8 +24,8 @@ class Migration(migrations.Migration):
                 ('redirect_to', models.CharField(max_length=512)),
                 ('target_object_id', models.PositiveIntegerField(null=True, blank=True)),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('target_content_type', models.ForeignKey(blank=True, to='contenttypes.ContentType', null=True, on_delete=models.CASCADE)),
-                ('user', models.ForeignKey(related_name='referral_codes', to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
+                ('target_content_type', models.ForeignKey(blank=True, to='contenttypes.ContentType', null=True, on_delete=models.SET_NULL)),
+                ('user', models.ForeignKey(related_name='referral_codes', to=settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)),
             ],
             options={
             },
@@ -41,8 +41,8 @@ class Migration(migrations.Migration):
                 ('target_object_id', models.PositiveIntegerField(null=True)),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
                 ('referral', models.ForeignKey(related_name='responses', to='referrals.Referral', on_delete=models.CASCADE)),
-                ('target_content_type', models.ForeignKey(to='contenttypes.ContentType', null=True, on_delete=models.CASCADE)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
+                ('target_content_type', models.ForeignKey(to='contenttypes.ContentType', null=True, on_delete=models.SET_NULL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)),
             ],
             options={
             },
