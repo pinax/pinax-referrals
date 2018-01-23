@@ -100,7 +100,7 @@ class Referral(models.Model):
 
     @classmethod
     def referral_for_request(cls, request):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             qs = ReferralResponse.objects.filter(user=request.user)
         else:
             qs = ReferralResponse.objects.filter(session_key=request.session.session_key)
