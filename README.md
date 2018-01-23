@@ -380,6 +380,10 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 ## Change Log
 
+### 3.0.1
+
+* Change `is_authenticated` to property in models.py
+
 ### 3.0.0
 
 * Add Django 2.0 compatibility testing
