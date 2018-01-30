@@ -21,7 +21,8 @@ class Referral(models.Model):
         AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         related_name="referral_codes",
-        null=True
+        null=True,
+        blank=True
     )
     label = models.CharField(max_length=100, blank=True)
     code = models.CharField(max_length=40, unique=True)
