@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-VERSION = "3.0.2"
+VERSION = "3.0.3"
 LONG_DESCRIPTION = """
 .. image:: http://pinaxproject.com/pinax-design/patches/pinax-referrals.svg
     :target: https://pypi.python.org/pypi/pinax-referrals/
@@ -12,7 +12,7 @@ Pinax Referrals
 .. image:: https://img.shields.io/pypi/v/pinax-referrals.svg
     :target: https://pypi.python.org/pypi/pinax-referrals/
 
-\ 
+\
 
 .. image:: https://img.shields.io/circleci/project/github/pinax/pinax-referrals.svg
     :target: https://circleci.com/gh/pinax/pinax-referrals
@@ -25,15 +25,15 @@ Pinax Referrals
 .. image:: https://img.shields.io/github/issues-pr-closed/pinax/pinax-referrals.svg
     :target: https://github.com/pinax/pinax-referrals/pulls?q=is%3Apr+is%3Aclosed
 
-\ 
+\
 
 .. image:: http://slack.pinaxproject.com/badge.svg
     :target: http://slack.pinaxproject.com/
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
     :target: https://opensource.org/licenses/MIT/
 
-\ 
-    
+\
+
 ``pinax-referrals`` provides a site with the ability for users to
 publish referral links to specific pages or objects and then record
 any responses to those links for subsequent use by the site.
