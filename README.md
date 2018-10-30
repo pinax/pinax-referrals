@@ -69,7 +69,6 @@ Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
 
 ## Documentation
 
-
 ### Installation
 
 To install pinax-referrals:
@@ -110,7 +109,6 @@ urlpatterns = [
     url(r"^referrals/", include("pinax.referrals.urls", namespace="pinax_referrals")),
 ]
 ```
-
 
 ### Usage
 
@@ -202,7 +200,6 @@ do any comparisons on the referral.target with another object you have in
 context for segmenting permissions or authorizations to make your referral
 system more fine grained.
 
-
 ### Settings
 
 #### `PINAX_REFERRALS_IP_ADDRESS_META_FIELD`
@@ -244,7 +241,6 @@ Defaults to `redirect_to`
 
 Defines the URL attribute to retrieve dynamic referral redirection URLs from.
 
-
 ### Signals
 
 `user_linked_to_response` is a signal that provides the single argument of a
@@ -282,7 +278,6 @@ following context variables:
 
 or if no object was passed into the `create_referral` template tag then
 the context would simply blank for `obj` and `obj_ct`.
-
 
 ### Template Tags and Filters
 
@@ -363,7 +358,6 @@ code means. The definitions exist in the setting `PINAX_REFERRALS_ACTION_DISPLAY
     {{ response.action|action_display }}
 </p>
 ```
-
 
 ### Development
 
