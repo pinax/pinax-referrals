@@ -2,9 +2,9 @@ all: init test
 
 init:
 	python setup.py develop
-	pip install tox coverage
+	pip install detox coverage
 
 test:
 	coverage erase
-	tox
+	detox
 	coverage html
