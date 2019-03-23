@@ -1,3 +1,4 @@
-include README.md
+include AUTHORS
 include LICENSE
+include README.md
 recursive-include pinax/referrals/templates *.html
