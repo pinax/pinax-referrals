@@ -374,6 +374,14 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 ## Change Log
 
+### 3.0.4
+
+* Fixing search in referral admin against "user"
+
+### 3.0.3
+
+* Changes to setup.py
+
 ### 3.0.2
 
 * Use Django 2.0 `reverse` import
