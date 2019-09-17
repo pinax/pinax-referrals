@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.urls import reverse
+from django.utils.html import format_html
 
 from .models import Referral, ReferralResponse
 
@@ -11,11 +13,13 @@ class ReferralAdmin(admin.ModelAdmin):
         "label",
         "redirect_to",
         "target_content_type",
-        "target_object_id"
+        "target_object_id",
+        "url",
     ]
     readonly_fields = ["code", "created_at"]
     list_filter = ["target_content_type", "created_at"]
     search_fields = ["user__first_name", "user__last_name", "user__email", "user__username", "code"]
+    autocomplete_fields = ["user"]
 
 
 @admin.register(ReferralResponse)
@@ -25,8 +29,25 @@ class ReferralResponseAdmin(admin.ModelAdmin):
         "session_key",
         "user",
         "ip_address",
-        "action"
+        "action",
+        "target_object_link",
     ]
-    readonly_fields = ["referral", "session_key", "user", "ip_address", "action"]
+    readonly_fields = ["referral", "session_key", "user", "ip_address", "action", "target_object_link"]
     list_filter = ["action", "created_at"]
-    search_fields = ["referral__code", "referral__user__username", "ip_address"]
+    search_fields = [
+        "referral__code",
+        "referral__user__email",
+        "referral__user__username",
+        "referral__user__first_name",
+        "referral__user__last_name",
+        "user__email",
+        "user__username",
+        "user__first_name",
+        "user__last_name",
+        "ip_address",
+    ]
+
+    def target_object_link(self, obj):
+        if obj.pk and obj.target:
+            admin_link = reverse('admin:%s_%s_change' % (obj.target_content_type.app_label, obj.target_content_type.model), args=(obj.target.pk,))
+            return format_html('<a href="{}">{}</a>', admin_link, obj.target.__str__())
