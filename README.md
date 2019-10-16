@@ -217,7 +217,7 @@ Setting this to `True` will produce urls with `https` instead of `http`.
 
 #### `PINAX_REFERRALS_CODE_GENERATOR_CALLBACK`
 
-Defaults to `"pinax.referrals.utils.generate_code"`
+Defaults to `"pinax.referrals.callbacks.generate_code"`
 
 Externalizes the logic that generates the referral code. `pinax-referrals` ships
 with a default that will generate a random 40-character alpha-numeric
