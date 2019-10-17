@@ -374,6 +374,10 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 ## Change Log
 
+### 3.0.5
+
+* Simple fix for [#46](https://github.com/pinax/pinax-referrals/issues/46). Increase the length of the ip_address, so IPv6 address array from HTTP_X_FORWARDED_FOR can be stored.
+
 ### 3.0.4
 
 * Fixing search in referral admin against "user"
