@@ -147,7 +147,7 @@ class ReferralResponse(models.Model):
     referral = models.ForeignKey(Referral, related_name="responses", on_delete=models.CASCADE)
     session_key = models.CharField(max_length=40)
     user = models.ForeignKey(AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
-    ip_address = models.CharField(max_length=45)
+    ip_address = models.CharField(max_length=265)
     action = models.CharField(max_length=128)
 
     target_content_type = models.ForeignKey(ContentType, null=True, on_delete=models.SET_NULL)
