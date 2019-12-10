@@ -6,7 +6,6 @@ from django.contrib.sites.models import Site
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
 
 from .conf import settings
 from .signals import user_linked_to_response
@@ -14,7 +13,6 @@ from .signals import user_linked_to_response
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 
-@python_2_unicode_compatible
 class Referral(models.Model):
 
     user = models.ForeignKey(
