@@ -19,7 +19,7 @@
 * [About Pinax](#about-pinax)
 * [Important Links](#important-links)
 * [Overview](#overview)
-  * [Supported Django and Python versions](#supported-django-and-python-versions)
+  * [Supported Django and Python Versions](#supported-django-and-python-versions)
 * [Documentation](#documentation)
   * [Installation](#installation)
   * [Usage](#usage)
@@ -38,8 +38,7 @@
 
 ## About Pinax
 
-Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable
-Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
+Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
 
 
 ## Important Links
@@ -70,7 +69,7 @@ builder wants to track for that session.
 It is also possible for anonymous referral links/codes to be generated
 which is useful in marketing promotions and the like.
 
-#### Supported Django and Python versions
+#### Supported Django and Python Versions
 
 Django / Python | 3.6 | 3.7 | 3.8
 --------------- | --- | --- | ---
@@ -553,8 +552,7 @@ In order to foster a kind, inclusive, and harassment-free community, the Pinax P
 
 ## Connect with Pinax
 
-For updates and news regarding the Pinax Project, please follow us on Twitter [@pinaxproject](https://twitter.com/pinaxproject)
-and check out our [Pinax Project blog](http://blog.pinaxproject.com).
+For updates and news regarding the Pinax Project, please follow us on Twitter [@pinaxproject](https://twitter.com/pinaxproject) and check out our [Pinax Project blog](http://blog.pinaxproject.com).
 
 
 ## License
