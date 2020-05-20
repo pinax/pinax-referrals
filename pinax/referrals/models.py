@@ -1,12 +1,9 @@
-from __future__ import unicode_literals
-
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
 
 from .conf import settings
 from .signals import user_linked_to_response
@@ -14,7 +11,6 @@ from .signals import user_linked_to_response
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 
-@python_2_unicode_compatible
 class Referral(models.Model):
 
     user = models.ForeignKey(
@@ -39,7 +35,7 @@ class Referral(models.Model):
 
     def __str__(self):
         if self.user:
-            return "{} ({})".format(self.user, self.code)
+            return f"{self.user} ({self.code})"
         else:
             return self.code
 
@@ -58,7 +54,7 @@ class Referral(models.Model):
         path = reverse("pinax_referrals:process_referral", kwargs={"code": self.code})
         domain = Site.objects.get_current().domain
         protocol = "https" if settings.PINAX_REFERRALS_SECURE_URLS else "http"
-        return "{}://{}{}".format(protocol, domain, path)
+        return f"{protocol}://{domain}{path}"
 
     @property
     def response_count(self):
@@ -67,7 +63,7 @@ class Referral(models.Model):
     def save(self, *args, **kwargs):
         if not self.code:
             self.code = settings.PINAX_REFERRALS_CODE_GENERATOR_CALLBACK(Referral)
-        return super(Referral, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     @classmethod
     def create(cls, redirect_to, user=None, label="", target=None):

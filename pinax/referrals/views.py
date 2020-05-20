@@ -57,7 +57,7 @@ def process_referral(request, code):
     if request.user.is_anonymous:
         response.set_cookie(
             "pinax-referral",
-            "%s:%s" % (code, session_key)
+            f"{code}:{session_key}"
         )
     else:
         response.delete_cookie("pinax-referral")
