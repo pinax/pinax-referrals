@@ -49,5 +49,5 @@ class ReferralResponseAdmin(admin.ModelAdmin):
 
     def target_object_link(self, obj):
         if obj.pk and obj.target:
-            admin_link = reverse('admin:%s_%s_change' % (obj.target_content_type.app_label, obj.target_content_type.model), args=(obj.target.pk,))
+            admin_link = reverse("admin:%s_%s_change" % (obj.target_content_type.app_label, obj.target_content_type.model), args=(obj.target.pk,))
             return format_html('<a href="{}">{}</a>', admin_link, obj.target.__str__())
