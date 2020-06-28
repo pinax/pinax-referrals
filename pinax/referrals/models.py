@@ -35,7 +35,7 @@ class Referral(models.Model):
 
     def __str__(self):
         if self.user:
-            return f"{self.user} ({self.code})"        
+            return f"{self.user} ({self.code})"
         else:
             return self.code
 
