@@ -91,16 +91,22 @@ class Referral(models.Model):
             return referral.respond(request, action_string, target=target)
 
     @classmethod
-    def referral_for_request(cls, request):
+    def referral_responses_for_request(cls, request):
         if request.user.is_authenticated:
             qs = ReferralResponse.objects.filter(user=request.user)
         else:
             qs = ReferralResponse.objects.filter(session_key=request.session.session_key)
 
-        try:
-            return qs.order_by("-created_at")[0].referral
-        except IndexError:
-            pass
+        return qs.order_by("-created_at")
+
+    @classmethod
+    def referral_for_request(cls, request):
+        responses = cls.referral_responses_for_request(request)
+        if responses:
+            try:
+                return responses[0].referral
+            except IndexError:
+                pass
 
     def link_responses_to_user(self, user, session_key):
         for response in self.responses.filter(session_key=session_key, user__isnull=True):
@@ -146,8 +152,8 @@ class ReferralResponse(models.Model):
     ip_address = models.CharField(max_length=265)
     action = models.CharField(max_length=128)
 
-    target_content_type = models.ForeignKey(ContentType, null=True, on_delete=models.SET_NULL)
-    target_object_id = models.PositiveIntegerField(null=True)
+    target_content_type = models.ForeignKey(ContentType, null=True, blank=True, on_delete=models.SET_NULL)
+    target_object_id = models.PositiveIntegerField(null=True, blank=True)
     target = GenericForeignKey(
         ct_field="target_content_type",
         fk_field="target_object_id"
