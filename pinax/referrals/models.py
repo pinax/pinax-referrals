@@ -64,7 +64,7 @@ class Referral(models.Model):
         if not self.code:
             self.code = settings.PINAX_REFERRALS_CODE_GENERATOR_CALLBACK(Referral)
         return super().save(*args, **kwargs)
- 
+
     @classmethod
     def create(cls, redirect_to, user=None, label="", target=None):
         if target:
