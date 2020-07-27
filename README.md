@@ -384,6 +384,10 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 ## Change Log
 
+### 4.0.1
+
+* Changes to admin.py and models.py to increase overridability
+
 ### 4.0.0
 
 * Drop Django 1.11, 2.0, and 2.1, and Python 2,7, 3.4, and 3.5 support
