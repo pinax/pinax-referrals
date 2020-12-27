@@ -130,7 +130,7 @@ a different way.
 
 For example, you might want to automatically give every user a referral code
 that is emailed to them upon signup. In this case, you could created a one-to-one
-relationshiop between their `Profile` and pinax-referrals' `Referral` and
+relationship between their `Profile` and pinax-referrals' `Referral` and
 create a signal receiver for when the `Profile` is created that calls:
 
 ```python
