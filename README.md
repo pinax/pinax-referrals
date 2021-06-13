@@ -390,6 +390,10 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 ## Change Log
 
+### 4.0.2
+
+* Added setting to set the cookie's max age in client's browser
+
 ### 4.0.1
 
 * Changes to admin.py and models.py to increase overridability
