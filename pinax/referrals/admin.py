@@ -47,6 +47,14 @@ class ReferralResponseAdmin(admin.ModelAdmin):
         "ip_address",
     ]
 
+    list_select_related = [
+        "referral__user",
+        "user",
+    ]
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related('target')
+
     def target_object_link(self, obj):
         if obj.pk and obj.target:
             admin_link = reverse("admin:%s_%s_change" % (obj.target_content_type.app_label, obj.target_content_type.model), args=(obj.target.pk,))
