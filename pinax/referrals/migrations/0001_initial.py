@@ -38,10 +38,10 @@ class Migration(migrations.Migration):
                 ('session_key', models.CharField(max_length=40)),
                 ('ip_address', models.CharField(max_length=45)),
                 ('action', models.CharField(max_length=128)),
-                ('target_object_id', models.PositiveIntegerField(null=True)),
+                ('target_object_id', models.PositiveIntegerField(null=True, blank=True)),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
                 ('referral', models.ForeignKey(related_name='responses', to='referrals.Referral', on_delete=models.CASCADE)),
-                ('target_content_type', models.ForeignKey(to='contenttypes.ContentType', null=True, on_delete=models.SET_NULL)),
+                ('target_content_type', models.ForeignKey(to='contenttypes.ContentType', null=True, blank=True, on_delete=models.SET_NULL)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)),
             ],
             options={
