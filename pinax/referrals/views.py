@@ -48,6 +48,7 @@ def process_referral(request, code):
     referral = get_object_or_404(Referral, code=code)
     session_key = ensure_session_key(request)
     referral.respond(request, "RESPONDED")
+    max_age = getattr(settings, "PINAX_COOKIE_MAX_AGE", None)
     try:
         response = redirect(request.GET[
             getattr(settings, "PINAX_REFERRALS_REDIRECT_ATTRIBUTE", "redirect_to")]
@@ -57,7 +58,8 @@ def process_referral(request, code):
     if request.user.is_anonymous:
         response.set_cookie(
             "pinax-referral",
-            f"{code}:{session_key}"
+            f"{code}:{session_key}",
+            max_age=max_age
         )
     else:
         response.delete_cookie("pinax-referral")

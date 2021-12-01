@@ -212,6 +212,12 @@ system more fine grained.
 
 ### Settings
 
+#### `PINAX_COOKIE_MAX_AGE`
+
+Defaults to `None`
+
+The total amount of time (in seconds) the cookie lasts in the client's browser.
+
 #### `PINAX_REFERRALS_IP_ADDRESS_META_FIELD`
 
 Defaults to `"HTTP_X_FORWARDED_FOR"`
@@ -383,6 +389,10 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 
 ## Change Log
+
+### 4.0.2
+
+* Added setting to set the cookie's max age in client's browser
 
 ### 4.0.1
 

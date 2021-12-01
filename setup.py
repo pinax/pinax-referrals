@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-VERSION = "4.0.1"
+VERSION = "4.0.2"
 LONG_DESCRIPTION = """
 .. image:: http://pinaxproject.com/pinax-design/patches/pinax-referrals.svg
     :target: https://pypi.python.org/pypi/pinax-referrals/
