@@ -17,8 +17,8 @@ class ReferralAdmin(admin.ModelAdmin):
         "url",
     ]
     readonly_fields = ["code", "created_at"]
-    list_filter = ["target_content_type"]
-    search_fields = ["user__username", "user__email", "code"]
+    list_filter = ["target_content_type", "created_at"]
+    search_fields = ["user__first_name", "user__last_name", "user__email", "user__username", "code"]
     autocomplete_fields = ["user"]
 
 
@@ -33,13 +33,17 @@ class ReferralResponseAdmin(admin.ModelAdmin):
         "target_object_link",
     ]
     readonly_fields = ["referral", "session_key", "user", "ip_address", "action", "target_object_link"]
-    list_filter = ["action"]
+    list_filter = ["action", "created_at"]
     search_fields = [
         "referral__code",
         "referral__user__email",
         "referral__user__username",
+        "referral__user__first_name",
+        "referral__user__last_name",
         "user__email",
         "user__username",
+        "user__first_name",
+        "user__last_name",
         "ip_address",
     ]
 
