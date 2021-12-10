@@ -93,11 +93,13 @@ class Referral(models.Model):
     @classmethod
     def referral_responses_for_request(cls, request):
         if request.user.is_authenticated:
-            qs = ReferralResponse.objects.filter(user=request.user)
+            qs = ReferralResponse.objects.filter(user=request.user, action="RESPONDED")
         else:
-            qs = ReferralResponse.objects.filter(session_key=request.session.session_key)
-
-        return qs.order_by("-created_at")
+            qs = ReferralResponse.objects.filter(session_key=request.session.session_key, action="RESPONDED")
+        if settings.PINAX_REFERRALS_RESPOND_TO_FIRST:
+            return qs.order_by("created_at")
+        else:
+            return qs.order_by("-created_at")
 
     @classmethod
     def referral_for_request(cls, request):
