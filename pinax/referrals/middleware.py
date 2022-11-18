@@ -3,12 +3,12 @@ from django.core.exceptions import ImproperlyConfigured
 from .models import Referral
 
 try:
-    from django.utils.deprecation import MiddlewareMixin as MIDDLEWARE_BASE_CLASS
+    from django.utils.deprecation import MiddlewareMixin as MiddlewareBaseClass
 except ImportError:
-    MIDDLEWARE_BASE_CLASS = object
+    MiddlewareBaseClass = object
 
 
-class SessionJumpingMiddleware(MIDDLEWARE_BASE_CLASS):
+class SessionJumpingMiddleware(MiddlewareBaseClass):
 
     def process_request(self, request):
         if not hasattr(request, "user"):

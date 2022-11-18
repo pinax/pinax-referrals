@@ -126,13 +126,13 @@ class Referral(models.Model):
             ""
         )
 
-        kwargs = dict(
-            referral=self,
-            session_key=request.session.session_key,
-            ip_address=ip_address,
-            action=action_string,
-            user=user
-        )
+        kwargs = {
+            "referral": self,
+            "session_key": request.session.session_key,
+            "ip_address": ip_address,
+            "action": action_string,
+            "user": user
+        }
         if target:
             kwargs.update({"target": target})
 

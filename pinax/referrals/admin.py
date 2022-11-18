@@ -53,7 +53,7 @@ class ReferralResponseAdmin(admin.ModelAdmin):
     ]
 
     def get_queryset(self, request):
-        return super().get_queryset(request).prefetch_related('target')
+        return super().get_queryset(request).prefetch_related("target")
 
     def target_object_link(self, obj):
         if obj.pk and obj.target:
