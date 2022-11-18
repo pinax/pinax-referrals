@@ -6,3 +6,4 @@ class AppConfig(BaseAppConfig):
 
     name = "pinax.referrals"
     verbose_name = _("Pinax Referrals")
+    default_auto_field = "django.db.models.AutoField"
