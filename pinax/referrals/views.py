@@ -13,6 +13,11 @@ try:
 except ImportError:
     from django.contrib.auth.decorators import login_required
 
+try:
+    from django.utils.http import url_has_allowed_host_and_scheme
+except ImportError:  # Django < 3.0
+    from django.utils.http import is_safe_url as url_has_allowed_host_and_scheme
+
 
 @login_required
 @require_POST
@@ -50,9 +55,18 @@ def process_referral(request, code):
     referral.respond(request, "RESPONDED")
     max_age = getattr(settings, "PINAX_COOKIE_MAX_AGE", None)
     try:
-        response = redirect(request.GET[
-            getattr(settings, "PINAX_REFERRALS_REDIRECT_ATTRIBUTE", "redirect_to")]
+        next_url = request.GET[
+            getattr(settings, "PINAX_REFERRALS_REDIRECT_ATTRIBUTE", "redirect_to")
+        ]
+        url_is_safe = url_has_allowed_host_and_scheme(
+            url=next_url,
+            allowed_hosts=request.get_host(),
+            require_https=request.is_secure(),
         )
+        if url_is_safe:
+            response = redirect(next_url)
+        else:
+            response = redirect(referral.redirect_to)
     except KeyError:
         response = redirect(referral.redirect_to)
     if request.user.is_anonymous:
