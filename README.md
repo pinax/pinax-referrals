@@ -225,6 +225,13 @@ Defaults to `"HTTP_X_FORWARDED_FOR"`
 This is the header value that is retrieved from `request.META` to record
 the ip address of the the respondent.
 
+#### `PINAX_REFERRALS_GET_CLIENT_IP_CALLBACK`
+
+Defaults to `"pinax.referrals.callbacks.get_client_ip"`
+
+If the default IP determining function doesn't suit you, supply a path with
+your own function (takes a request as a parameter).
+
 #### `PINAX_REFERRALS_SECURE_URLS`
 
 Defaults to `False`

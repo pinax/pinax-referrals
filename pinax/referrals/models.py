@@ -121,10 +121,7 @@ class Referral(models.Model):
             else:
                 user = None
 
-        ip_address = request.META.get(
-            settings.PINAX_REFERRALS_IP_ADDRESS_META_FIELD,
-            ""
-        )
+        ip_address = settings.PINAX_REFERRALS_GET_CLIENT_IP_CALLBACK(request)
 
         kwargs = {
             "referral": self,
