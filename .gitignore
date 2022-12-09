@@ -23,6 +23,8 @@ var/
 *.egg
 *.eggs
 .python-version
+*.sw[po]
+*.orig
 
 # Pipfile
 Pipfile
