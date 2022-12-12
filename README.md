@@ -264,6 +264,9 @@ Defaults to `redirect_to`
 
 Defines the URL attribute to retrieve dynamic referral redirection URLs from.
 
+The URL is checked by `django.utils.http.url_has_allowed_host_and_scheme`,
+so if the domain name is not listed in `ALLOWED_HOSTS` the view will redirect to `Referral.redirec_to` path.
+
 ### Signals
 
 `user_linked_to_response` is a signal that provides the single argument of a
@@ -396,6 +399,14 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 
 ## Change Log
+
+### 4.1.0 (2022-12-12)
+
+* Update to support Django 2.2-4.1, Python 3.7-3.10
+* Fixed admin views performance
+* Fixed AttributeError when `referral_responses_for_request()` was called with WSGIRequest
+* Added customizable callback for `get_client_ip` through `PINAX_REFERRALS_GET_CLIENT_IP_CALLBACK` variable
+* Fixed potential phishing attack risk in `redirect_to` parameter. Now the parameter is checked with `django.utils.http.url_has_allowed_host_and_scheme` to prevent redirection to unsafe domain.
 
 ### 4.0.2
 
