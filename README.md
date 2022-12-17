@@ -245,11 +245,8 @@ Defaults to `"pinax.referrals.callbacks.generate_code"`
 Externalizes the logic that generates the referral code. `pinax-referrals` ships
 with a default that will generate a random 40-character alpha-numeric
 string that can also be used as a reference implementation. The callable
-defined by the fully qualified path is passed a single parameter that is
-the class of the referral model, or `Referral`. This is done as a pure
-convenience so as to alleviate the need for you to have to import it
-should you need it (and you most likely will if you want to be
-certain of uniqueness).
+defined by the fully qualified path is passed the class of the referral model (or `Referral`)
+and the actual referral model instance.
 
 #### `PINAX_REFERRALS_ACTION_DISPLAY`
 
@@ -399,6 +396,10 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 
 ## Change Log
+
+### Unreleased
+
+* Added referral model instance parameter to `generate_code` callback (`PINAX_REFERRALS_CODE_GENERATOR_CALLBACK` variable)
 
 ### 4.1.0 (2022-12-12)
 

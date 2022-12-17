@@ -3,7 +3,7 @@ import random
 from .conf import settings
 
 
-def generate_code(referral_class):
+def generate_code(referral_class, referral):
     def _generate_code():
         t = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ1234567890"
         return "".join([random.choice(t) for i in range(40)])

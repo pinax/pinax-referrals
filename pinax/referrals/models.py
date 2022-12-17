@@ -1,3 +1,5 @@
+from inspect import getfullargspec
+
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
@@ -62,7 +64,9 @@ class Referral(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.code:
-            self.code = settings.PINAX_REFERRALS_CODE_GENERATOR_CALLBACK(Referral)
+            func = settings.PINAX_REFERRALS_CODE_GENERATOR_CALLBACK
+            func_args = [Referral] if len(getfullargspec(func).args) == 1 else [Referral, self]
+            self.code = func(*func_args)
         return super().save(*args, **kwargs)
 
     @classmethod
