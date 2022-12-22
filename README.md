@@ -246,7 +246,17 @@ Externalizes the logic that generates the referral code. `pinax-referrals` ships
 with a default that will generate a random 40-character alpha-numeric
 string that can also be used as a reference implementation. The callable
 defined by the fully qualified path is passed the class of the referral model (or `Referral`)
-and the actual referral model instance.
+and the actual referral model instance. This means that you can easily customize the code for each user.
+
+For example:
+
+```python
+def generate_code(referral_class, referral):
+    return referral.user.username
+```
+
+Since only one Referral with the same code can exist at the same time the value
+returned by `generate_code` needs to be unique.
 
 #### `PINAX_REFERRALS_ACTION_DISPLAY`
 
