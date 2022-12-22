@@ -6,8 +6,12 @@ from pinax.referrals.models import Referral
 from model_bakery import baker
 
 
+def generate_code_callback(referral_class, referral):
+    return f"recommended-by-{referral.user.username}"
+
+
 def legacy_generate_code_callback(referral_class):
-    return "some_generated_code"
+    return "some-generated-code"
 
 
 class ReferralTests(TestCase):
@@ -34,9 +38,17 @@ class ReferralTests(TestCase):
         self.assertEqual(queryset.get().user, request.user)
         self.assertEqual(queryset.get().session_key, "foo_bar")
 
+    @override_settings(PINAX_REFERRALS_CODE_GENERATOR_CALLBACK=generate_code_callback)
+    def test_code_generator_callback(self):
+        user = baker.make("User", username="joe")
+        referral = baker.make("Referral", user=user, code=None)
+        # the callback function is being called in the save() method, inside baker.make
+        self.assertEqual(referral.code, "recommended-by-joe")
+
     @override_settings(PINAX_REFERRALS_CODE_GENERATOR_CALLBACK=legacy_generate_code_callback)
-    def test_legacy_code_generator_fallback(self):
-        # the new callback signature accepts two parameters, but old callback signatures
+    def test_legacy_code_generator_callback(self):
+        # the new callback signature accepts two parameters, but the old callback signature
         # with just the referral_class as parameter should still work
         referral = baker.make("Referral", code=None)
-        self.assertEqual(referral.code, "some_generated_code")
+        # the callback function is being called in the save() method, inside baker.make
+        self.assertEqual(referral.code, "some-generated-code")
