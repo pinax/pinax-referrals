@@ -132,7 +132,8 @@ class Referral(models.Model):
             "session_key": request.session.session_key,
             "ip_address": ip_address,
             "action": action_string,
-            "user": user
+            "user": user,
+            "http_referrer": request.META.get("HTTP_REFERER", ""),
         }
         if target:
             kwargs.update({"target": target})
@@ -152,6 +153,7 @@ class ReferralResponse(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
     ip_address = models.CharField(max_length=265)
     action = models.CharField(max_length=128)
+    http_referrer = models.CharField(max_length=1024, blank=True)
 
     target_content_type = models.ForeignKey(ContentType, null=True, blank=True, on_delete=models.SET_NULL)
     target_object_id = models.PositiveIntegerField(null=True, blank=True)

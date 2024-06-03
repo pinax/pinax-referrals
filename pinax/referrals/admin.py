@@ -29,6 +29,7 @@ class ReferralResponseAdmin(admin.ModelAdmin):
         "session_key",
         "user",
         "ip_address",
+        "http_referrer",
         "action",
         "target_object_link",
     ]
