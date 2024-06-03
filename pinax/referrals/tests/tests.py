@@ -3,7 +3,7 @@ import json
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from pinax.referrals.models import Referral
+from pinax.referrals.models import Referral, ReferralResponse
 
 
 class Tests(TestCase):
@@ -74,3 +74,24 @@ class Tests(TestCase):
         self.assertEqual(referral.responses.count(), 1)
         referral_response = referral.responses.first()
         self.assertEqual(referral_response.user, referred_user)
+
+    def test_process_referral_slash_both_variants(self):
+        referral = Referral.create(redirect_to="https://example.com/")
+        self.assertFalse(referral.responses.exists())
+        response = self.client.get(referral.url.rstrip("/"))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "https://example.com/")
+        self.assertEqual(referral.responses.count(), 1)
+        referral_response = referral.responses.first()
+        self.assertIsNone(referral_response.user)
+        self.assertEqual(response.cookies["pinax-referral"].value, f"{referral.code}:{referral_response.session_key}")
+
+        ReferralResponse.objects.all().delete()
+
+        response = self.client.get(referral.url.rstrip("/") + "/")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "https://example.com/")
+        self.assertEqual(referral.responses.count(), 1)
+        referral_response = referral.responses.first()
+        self.assertIsNone(referral_response.user)
+        self.assertEqual(response.cookies["pinax-referral"].value, f"{referral.code}:{referral_response.session_key}")
