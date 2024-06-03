@@ -407,6 +407,10 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 ## Change Log
 
+### 4.3.0 (2023-06-07)
+
+* added tolerance to the ending slash in URL
+
 ### 4.2.0 (2023-01-12)
 
 * Added referral model instance parameter to `generate_code` callback (`PINAX_REFERRALS_CODE_GENERATOR_CALLBACK` variable)
