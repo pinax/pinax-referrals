@@ -28,23 +28,25 @@ class Tests(TestCase):
         self.assertFalse(referral.responses.exists())
         referred_user = get_user_model().objects.create_user("janedoe", "jane@doe.com", "notsosecret")
         self.assertTrue(self.client.login(username=referred_user.username, password="notsosecret"))
-        response = self.client.get(referral.url)
+        response = self.client.get(referral.url, HTTP_REFERER="https://referrer.com")
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response["Location"], "https://example.com/")
         self.assertEqual(referral.responses.count(), 1)
         referral_response = referral.responses.first()
         self.assertEqual(referral_response.user, referred_user)
+        self.assertEqual(referral_response.http_referrer, "https://referrer.com")
 
-    def test_process_referral_authenticated_anonomous(self):
+    def test_process_referral_anonymous(self):
         referral = Referral.create(redirect_to="https://example.com/")
         self.assertFalse(referral.responses.exists())
-        response = self.client.get(referral.url)
+        response = self.client.get(referral.url, HTTP_REFERER="https://referrer.com")
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response["Location"], "https://example.com/")
         self.assertEqual(referral.responses.count(), 1)
         referral_response = referral.responses.first()
         self.assertIsNone(referral_response.user)
         self.assertEqual(response.cookies["pinax-referral"].value, f"{referral.code}:{referral_response.session_key}")
+        self.assertEqual(referral_response.http_referrer, "https://referrer.com")
 
     def test_process_referral_authenticated_next(self):
         """The process_referral view should redirect user to the url from redirect_to queryset parameter."""
@@ -52,12 +54,13 @@ class Tests(TestCase):
         self.assertFalse(referral.responses.exists())
         referred_user = get_user_model().objects.create_user("janedoe", "jane@doe.com", "notsosecret")
         self.assertTrue(self.client.login(username=referred_user.username, password="notsosecret"))
-        response = self.client.get(referral.url + "?redirect_to=/foo/bar/")
+        response = self.client.get(referral.url + "?redirect_to=/foo/bar/", HTTP_REFERER="https://referrer.com")
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response["Location"], "/foo/bar/")
         self.assertEqual(referral.responses.count(), 1)
         referral_response = referral.responses.first()
         self.assertEqual(referral_response.user, referred_user)
+        self.assertEqual(referral_response.http_referrer, "https://referrer.com")
 
     def test_process_referral_authenticated_next_unsafe(self):
         """
@@ -68,12 +71,13 @@ class Tests(TestCase):
         self.assertFalse(referral.responses.exists())
         referred_user = get_user_model().objects.create_user("janedoe", "jane@doe.com", "notsosecret")
         self.assertTrue(self.client.login(username=referred_user.username, password="notsosecret"))
-        response = self.client.get(referral.url + "?redirect_to=https://www.google.com/")
+        response = self.client.get(referral.url + "?redirect_to=https://www.google.com/", HTTP_REFERER="https://referrer.com")
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response["Location"], "https://example.com/")
         self.assertEqual(referral.responses.count(), 1)
         referral_response = referral.responses.first()
         self.assertEqual(referral_response.user, referred_user)
+        self.assertEqual(referral_response.http_referrer, "https://referrer.com")
 
     def test_process_referral_slash_both_variants(self):
         referral = Referral.create(redirect_to="https://example.com/")
