@@ -19,8 +19,8 @@ class ReferralTests(TestCase):
         # Create a referral with a blank user
         request = RequestFactory().get("/referral/")
         request.session = self.client.session
-        baker.make("ReferralResponse", session_key=request.session.session_key)
-        baker.make("ReferralResponse", user=baker.make("User"))
+        baker.make("ReferralResponse", session_key=request.session.session_key, target=None, referral__target=None)
+        baker.make("ReferralResponse", user=baker.make("User"), target=None, referral__target=None)
         queryset = Referral.referral_responses_for_request(request)
         self.assertEqual(queryset.count(), 1)
         self.assertEqual(queryset.get().session_key, request.session.session_key)
@@ -31,8 +31,8 @@ class ReferralTests(TestCase):
         request = RequestFactory().get("/referral/")
         request.session = self.client.session
         request.user = baker.make("User")
-        baker.make("ReferralResponse", user=request.user, session_key="foo_bar")
-        baker.make("ReferralResponse", session_key="session_key")
+        baker.make("ReferralResponse", user=request.user, session_key="foo_bar", target=None, referral__target=None)
+        baker.make("ReferralResponse", session_key="session_key", target=None, referral__target=None)
         queryset = Referral.referral_responses_for_request(request)
         self.assertEqual(queryset.count(), 1)
         self.assertEqual(queryset.get().user, request.user)
@@ -41,7 +41,7 @@ class ReferralTests(TestCase):
     @override_settings(PINAX_REFERRALS_CODE_GENERATOR_CALLBACK=generate_code_callback)
     def test_code_generator_callback(self):
         user = baker.make("User", username="joe")
-        referral = baker.make("Referral", user=user, code=None)
+        referral = baker.make("Referral", user=user, code=None, target=None)
         # the callback function is being called in the save() method, inside baker.make
         self.assertEqual(referral.code, "recommended-by-joe")
 
@@ -49,6 +49,6 @@ class ReferralTests(TestCase):
     def test_legacy_code_generator_callback(self):
         # the new callback signature accepts two parameters, but the old callback signature
         # with just the referral_class as parameter should still work
-        referral = baker.make("Referral", code=None)
+        referral = baker.make("Referral", code=None, target=None)
         # the callback function is being called in the save() method, inside baker.make
         self.assertEqual(referral.code, "some-generated-code")
