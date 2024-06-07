@@ -23,11 +23,12 @@ jobs:
     strategy:
       matrix:
         python-version:
-          # - "3.6"  stopped working with GitHub actions, disabling temporarily
           - "3.7"
           - "3.8"
           - "3.9"
           - "3.10"
+          - "3.11"
+          - "3.12"
       fail-fast: false
 
     services:
@@ -58,7 +59,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip wheel setuptools tox
+          python -m pip install --upgrade pip wheel tox
       - name: Run tox targets for ${{ matrix.python-version }}
         run: |
           ENV_PREFIX=$(tr -C -d "0-9" <<< "${{ matrix.python-version }}")
