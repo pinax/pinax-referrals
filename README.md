@@ -411,6 +411,7 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 * added tolerance to the ending slash in URL
 * ReferralResponse now stores http_referrer
+* Updated testing. Tests now passes in Django 2.2-5.1 and Python 3.7-3.12
 
 ### 4.2.0 (2023-01-12)
 
