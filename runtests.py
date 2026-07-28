@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import os
 import sys
-from distutils.version import LooseVersion
 
 import django
 
@@ -31,51 +30,34 @@ DEFAULT_SETTINGS = dict(
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
             'APP_DIRS': True,
         },
-    ]
+    ],
+    MIDDLEWARE=[
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'pinax.referrals.middleware.SessionJumpingMiddleware',
+    ],
 )
-
-if LooseVersion(django.__version__) < LooseVersion('1.10'):
-    DEFAULT_SETTINGS['MIDDLEWARE_CLASSES'] = [
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.middleware.csrf.CsrfViewMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'pinax.referrals.middleware.SessionJumpingMiddleware',
-    ]
-else:
-    DEFAULT_SETTINGS['MIDDLEWARE'] = [
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.middleware.csrf.CsrfViewMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'pinax.referrals.middleware.SessionJumpingMiddleware',
-    ]
 
 
 def runtests(*test_args):
     if not settings.configured:
         settings.configure(**DEFAULT_SETTINGS)
 
-    # Compatibility with Django 1.7's stricter initialization
-    if hasattr(django, "setup"):
-        django.setup()
+    django.setup()
 
     parent = os.path.dirname(os.path.abspath(__file__))
     sys.path.insert(0, parent)
 
     from django.core import checks
+    from django.test.runner import DiscoverRunner
 
-    try:
-        from django.test.runner import DiscoverRunner
-        runner_class = DiscoverRunner
-        test_args = ["pinax.referrals.tests"]
-    except ImportError:
-        from django.test.simple import DjangoTestSuiteRunner
-        runner_class = DjangoTestSuiteRunner
-        test_args = ["tests"]
+    test_args = ["pinax.referrals.tests"]
 
     checks = checks.run_checks()
     if checks:
         sys.exit(checks)
-    failures = runner_class(verbosity=1, interactive=True, failfast=False).run_tests(test_args)
+    failures = DiscoverRunner(verbosity=1, interactive=True, failfast=False).run_tests(test_args)
     sys.exit(failures)
 
 

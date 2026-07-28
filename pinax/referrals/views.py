@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from .models import Referral
@@ -12,11 +13,6 @@ try:
     from account.decorators import login_required
 except ImportError:
     from django.contrib.auth.decorators import login_required
-
-try:
-    from django.utils.http import url_has_allowed_host_and_scheme
-except ImportError:  # Django < 3.0
-    from django.utils.http import is_safe_url as url_has_allowed_host_and_scheme
 
 
 @login_required
