@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-VERSION = "4.3.0"
+VERSION = "4.4.0"
 LONG_DESCRIPTION = """
 .. image:: http://pinaxproject.com/pinax-design/patches/pinax-referrals.svg
     :target: https://pypi.python.org/pypi/pinax-referrals/
@@ -50,13 +50,17 @@ which is useful in marketing promotions and the like.
 Supported Django and Python Versions
 ------------------------------------
 
-+-----------------+-----+-----+-----+
-| Django / Python | 3.6 | 3.7 | 3.8 |
-+=================+=====+=====+=====+
-|  2.2            |  *  |  *  |  *  |
-+-----------------+-----+-----+-----+
-|  3.0            |  *  |  *  |  *  |
-+-----------------+-----+-----+-----+
++-----------------+-----+-----+------+------+------+------+
+| Django / Python | 3.8 | 3.9 | 3.10 | 3.11 | 3.12 | 3.13 |
++=================+=====+=====+======+======+======+======+
+|  3.2            |  *  |  *  |  *   |      |      |      |
++-----------------+-----+-----+------+------+------+------+
+|  4.2            |  *  |  *  |  *   |  *   |  *   |      |
++-----------------+-----+-----+------+------+------+------+
+|  5.2            |     |     |  *   |  *   |  *   |  *   |
++-----------------+-----+-----+------+------+------+------+
+|  6.0            |     |     |      |      |  *   |  *   |
++-----------------+-----+-----+------+------+------+------+
 """
 
 setup(
@@ -78,19 +82,25 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Framework :: Django",
-        "Framework :: Django :: 2.2",
-        "Framework :: Django :: 3.0",
+        "Framework :: Django :: 3.2",
+        "Framework :: Django :: 4.2",
+        "Framework :: Django :: 5.2",
+        "Framework :: Django :: 6.0",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
+    python_requires=">=3.8",
     install_requires=[
-        "django>=2.2",
+        "django>=3.2",
         "django-appconf>=1.0.1",
     ],
     test_suite="runtests.runtests",
