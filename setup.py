@@ -69,6 +69,7 @@ setup(
     description="a referrals app for Django",
     name="pinax-referrals",
     long_description=LONG_DESCRIPTION,
+    long_description_content_type="text/x-rst",
     version=VERSION,
     url="http://github.com/pinax/pinax-referrals/",
     license="MIT",
