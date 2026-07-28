@@ -409,7 +409,7 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 ## Change Log
 
-### 4.4.0
+### 4.4.0 (2026-07-28)
 
 * Dropped support for Django < 3.2 and Python < 3.8
 * Now tested against Django 3.2, 4.2, 5.2, 6.0 and main, on Python 3.8-3.13
