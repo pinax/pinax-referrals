@@ -18,22 +18,17 @@ jobs:
   # This workflow contains a single job called "build"
   tests:
     # The type of runner that the job will run on
-    # Python 3.7 is not available on the ubuntu-24.04 image that
-    # ubuntu-latest now points at, so that entry pins an older runner.
-    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
         python-version:
-          - "3.7"
           - "3.8"
           - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
-        include:
-          - python-version: "3.7"
-            os: ubuntu-22.04
+          - "3.13"
       fail-fast: false
 
     services:
