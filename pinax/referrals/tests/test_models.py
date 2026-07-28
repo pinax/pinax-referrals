@@ -1,9 +1,8 @@
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
 
-from pinax.referrals.models import Referral
-
 from model_bakery import baker
+from pinax.referrals.models import Referral
 
 
 def generate_code_callback(referral_class, referral):
