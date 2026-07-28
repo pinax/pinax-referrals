@@ -4,7 +4,7 @@
 
 [![](https://img.shields.io/pypi/v/pinax-referrals.svg)](https://pypi.python.org/pypi/pinax-referrals/)
 
-[![CircleCi](https://img.shields.io/circleci/project/github/pinax/pinax-referrals.svg)](https://circleci.com/gh/pinax/pinax-referrals)
+[![CI](https://github.com/pinax/pinax-referrals/actions/workflows/main.yml/badge.svg)](https://github.com/pinax/pinax-referrals/actions/workflows/main.yml)
 [![Codecov](https://img.shields.io/codecov/c/github/pinax/pinax-referrals.svg)](https://codecov.io/gh/pinax/pinax-referrals)
 [![](https://img.shields.io/github/contributors/pinax/pinax-referrals.svg)](https://github.com/pinax/pinax-referrals/graphs/contributors)
 [![](https://img.shields.io/github/issues-pr/pinax/pinax-referrals.svg)](https://github.com/pinax/pinax-referrals/pulls)
@@ -71,10 +71,12 @@ which is useful in marketing promotions and the like.
 
 #### Supported Django and Python Versions
 
-Django / Python | 3.6 | 3.7 | 3.8
---------------- | --- | --- | ---
-2.2  |  *  |  *  |  *
-3.0  |  *  |  *  |  *
+Django / Python | 3.8 | 3.9 | 3.10 | 3.11 | 3.12 | 3.13
+--------------- | --- | --- | ---- | ---- | ---- | ----
+3.2  |  *  |  *  |  *   |      |      |
+4.2  |  *  |  *  |  *   |  *   |  *   |
+5.2  |     |     |  *   |  *   |  *   |  *
+6.0  |     |     |      |      |  *   |  *
 
 
 ## Documentation
@@ -406,6 +408,17 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 
 ## Change Log
+
+### 4.4.0
+
+* Dropped support for Django < 3.2 and Python < 3.8
+* Now tested against Django 3.2, 4.2, 5.2, 6.0 and main, on Python 3.8-3.13
+* Added `python_requires` so pip no longer installs the package on unsupported Python versions
+* Removed compatibility shims that the new baseline makes dead code
+  (`default_app_config`, the `MiddlewareMixin` fallback, the `is_safe_url`
+  fallback, and the `pkg_resources` fallback)
+* Removed the `distutils` dependency from the test runner
+* Updated the linting toolchain (flake8 7, isort 5)
 
 ### 4.3.0 (2023-06-07)
 
