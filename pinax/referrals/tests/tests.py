@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
+from django.contrib.contenttypes.models import ContentType
 from django.test import RequestFactory, TestCase
 from django.utils import timezone
 
@@ -221,3 +222,93 @@ class ExpiredReferralTests(TestCase):
         self.expire(referral)
         self.assertIsNone(Referral.record_response(self.anonymous_request(), "SIGNED_UP"))
         self.assertFalse(referral.responses.filter(action="SIGNED_UP").exists())
+
+
+class RobustnessTests(TestCase):
+
+    def login(self):
+        user = get_user_model().objects.create_user("janedoe", "jane@doe.com", "notsosecret")
+        self.assertTrue(self.client.login(username=user.username, password="notsosecret"))
+        return user
+
+    def test_unresolvable_redirect_to_parameter_falls_back_to_stored_redirect_to(self):
+        referral = Referral.create(redirect_to="/landing/")
+        response = self.client.get(referral.url, {"redirect_to": "foo"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/landing/")
+        self.assertEqual(referral.responses.count(), 1)
+
+    def test_url_name_in_redirect_to_parameter_still_resolves(self):
+        referral = Referral.create(redirect_to="/landing/")
+        response = self.client.get(referral.url, {"redirect_to": "pinax_referrals:create_referral"})
+        self.assertEqual(response["Location"], "/")
+
+    def test_unresolvable_stored_redirect_to_falls_back_to_root(self):
+        referral = Referral.create(redirect_to="foo")
+        response = self.client.get(referral.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/")
+
+    def test_referral_cookie_links_responses_to_user_who_logs_in(self):
+        referral = Referral.create(redirect_to="/landing/")
+        self.client.get(referral.url)
+        user = self.login()
+        response = self.client.get("/")
+        self.assertEqual(referral.responses.get().user, user)
+        self.assertEqual(response.cookies["pinax-referral"].value, "")
+
+    def test_unusable_referral_cookie_is_dropped_for_logged_in_user(self):
+        self.login()
+        for cookie in ["no-colon", "unknown-code:some-session"]:
+            with self.subTest(cookie=cookie):
+                self.client.cookies["pinax-referral"] = cookie
+                response = self.client.get("/")
+                self.assertEqual(response.status_code, 405)
+                self.assertEqual(response.cookies["pinax-referral"].value, "")
+
+    def test_for_request_ignores_malformed_cookie(self):
+        request = RequestFactory().get("/")
+        request.COOKIES["pinax-referral"] = "no-colon"
+        self.assertIsNone(Referral.for_request(request))
+
+    def test_create_referral_with_target(self):
+        user = self.login()
+        response = self.client.post("/", data={
+            "redirect_to": "/landing/",
+            "obj_ct_pk": ContentType.objects.get_for_model(user).pk,
+            "obj_pk": user.pk,
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Referral.objects.get().target, user)
+
+    def test_create_referral_rejects_unknown_target(self):
+        user = self.login()
+        user_ct_pk = ContentType.objects.get_for_model(user).pk
+        missing_ct_pk = ContentType.objects.order_by("-pk").first().pk + 1
+        for obj_ct_pk, obj_pk in [
+            (missing_ct_pk, user.pk),
+            ("abc", user.pk),
+            (user_ct_pk, user.pk + 1),
+            (user_ct_pk, "abc"),
+        ]:
+            with self.subTest(obj_ct_pk=obj_ct_pk, obj_pk=obj_pk):
+                response = self.client.post("/", data={
+                    "redirect_to": "/landing/",
+                    "obj_ct_pk": obj_ct_pk,
+                    "obj_pk": obj_pk,
+                })
+                self.assertEqual(response.status_code, 400)
+                self.assertIn("error", json.loads(response.content.decode("utf-8")))
+        self.assertFalse(Referral.objects.exists())
+
+    def test_referral_cookie_flags(self):
+        referral = Referral.create(redirect_to="/landing/")
+        cookie = self.client.get(referral.url).cookies["pinax-referral"]
+        self.assertIs(cookie["httponly"], True)
+        self.assertEqual(cookie["samesite"], "Lax")
+        self.assertFalse(cookie["secure"])
+
+    def test_referral_cookie_is_secure_over_https(self):
+        referral = Referral.create(redirect_to="/landing/")
+        cookie = self.client.get(referral.url, secure=True).cookies["pinax-referral"]
+        self.assertIs(cookie["secure"], True)

@@ -48,7 +48,7 @@ class Referral(models.Model):
     def for_request(cls, request):
         cookie = request.COOKIES.get("pinax-referral")
         if cookie:
-            code, session_key = cookie.split(":")
+            code, _, _ = cookie.partition(":")
             try:
                 return Referral.objects.get(code=code)
             except Referral.DoesNotExist:
@@ -108,12 +108,9 @@ class Referral(models.Model):
 
     @classmethod
     def referral_for_request(cls, request):
-        responses = cls.referral_responses_for_request(request)
-        if responses:
-            try:
-                return responses[0].referral
-            except IndexError:
-                pass
+        response = cls.referral_responses_for_request(request).first()
+        if response:
+            return response.referral
 
     def link_responses_to_user(self, user, session_key):
         for response in self.responses.filter(session_key=session_key, user__isnull=True):

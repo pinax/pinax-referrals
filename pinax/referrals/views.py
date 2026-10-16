@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, resolve_url
 from django.template.loader import render_to_string
+from django.urls import NoReverseMatch
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
@@ -23,6 +25,17 @@ def _is_safe_redirect_url(request, url):
     )
 
 
+def _redirect_url(request, *candidates):
+    """The first candidate that is a safe URL or URL name, resolved; "/" if none is."""
+    for url in candidates:
+        if _is_safe_redirect_url(request, url):
+            try:
+                return resolve_url(url)
+            except NoReverseMatch:
+                pass
+    return "/"
+
+
 @login_required
 @require_POST
 def create_referral(request):
@@ -34,8 +47,11 @@ def create_referral(request):
     ctx = {"url": redirect_to}
 
     if request.POST.get("obj_ct_pk") and request.POST.get("obj_pk"):
-        ct = ContentType.objects.get(pk=request.POST.get("obj_ct_pk"))
-        target = ct.get_object_for_this_type(pk=request.POST.get("obj_pk"))
+        try:
+            ct = ContentType.objects.get(pk=request.POST.get("obj_ct_pk"))
+            target = ct.get_object_for_this_type(pk=request.POST.get("obj_pk"))
+        except (ObjectDoesNotExist, ValueError):
+            return JsonResponse({"error": "obj_ct_pk and obj_pk must identify an existing object."}, status=400)
         ctx["obj"] = target
         ctx["obj_ct"] = ct
 
@@ -59,14 +75,12 @@ def create_referral(request):
 
 def process_referral(request, code):
     referral = get_object_or_404(Referral, code=code)
-    next_url = request.GET.get(
-        getattr(settings, "PINAX_REFERRALS_REDIRECT_ATTRIBUTE", "redirect_to")
+    next_url = _redirect_url(
+        request,
+        request.GET.get(getattr(settings, "PINAX_REFERRALS_REDIRECT_ATTRIBUTE", "redirect_to")),
+        referral.redirect_to,
     )
-    if not _is_safe_redirect_url(request, next_url):
-        next_url = referral.redirect_to
-    if not _is_safe_redirect_url(request, next_url):
-        next_url = "/"
-    response = redirect(next_url)
+    response = HttpResponseRedirect(next_url)
     if not referral.is_active():
         return response
 
@@ -77,7 +91,10 @@ def process_referral(request, code):
         response.set_cookie(
             "pinax-referral",
             f"{code}:{session_key}",
-            max_age=max_age
+            max_age=max_age,
+            secure=request.is_secure(),
+            httponly=True,
+            samesite="Lax",
         )
     else:
         response.delete_cookie("pinax-referral")

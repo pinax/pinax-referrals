@@ -1,7 +1,8 @@
 from datetime import timedelta
 
+from django.db import connection
 from django.test import RequestFactory, TestCase
-from django.test.utils import override_settings
+from django.test.utils import CaptureQueriesContext, override_settings
 from django.utils import timezone
 
 from model_bakery import baker
@@ -65,3 +66,20 @@ class ReferralTests(TestCase):
     def test_is_not_active_after_expiry(self):
         referral = baker.make("Referral", expired_at=timezone.now() - timedelta(seconds=1), target=None)
         self.assertFalse(referral.is_active())
+
+    def test_referral_for_request_fetches_only_the_latest_response(self):
+        request = RequestFactory().get("/referral/")
+        request.session = self.client.session
+        older, newer = baker.make("Referral", target=None, _quantity=2)
+        session_key = request.session.session_key
+        now = timezone.now()
+        baker.make("ReferralResponse", referral=older, session_key=session_key, created_at=now - timedelta(days=1), target=None)
+        baker.make("ReferralResponse", referral=newer, session_key=session_key, created_at=now, target=None)
+        with CaptureQueriesContext(connection) as queries:
+            self.assertEqual(Referral.referral_for_request(request), newer)
+        self.assertIn("LIMIT 1", queries.captured_queries[0]["sql"])
+
+    def test_referral_for_request_without_responses(self):
+        request = RequestFactory().get("/referral/")
+        request.session = self.client.session
+        self.assertIsNone(Referral.referral_for_request(request))
