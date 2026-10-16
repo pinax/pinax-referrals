@@ -174,6 +174,21 @@ URL to dynamically redirect to an alternate destination.
 
 The URL parameter used can be altered in your [settings](#settings) file.
 
+#### Expiring referrals
+
+A referral stops counting once its `expired_at` time has passed. Following
+the link still redirects to its `redirect_to`, so links already shared do
+not break, but no response is recorded and no referral cookie is set.
+`Referral.record_response` records nothing more for it, and
+`SessionJumpingMiddleware` no longer links its earlier responses to a user
+who logs in. A referral whose `expired_at` is `None` (the default) never
+expires. `Referral.is_active()` tells you whether a referral still counts.
+
+```python
+referral.expired_at = timezone.now() + timedelta(days=30)
+referral.save()
+```
+
 #### `Referral.record_response`
 
 The classmethod `record_response` will attempt to see if the current user or
@@ -425,6 +440,13 @@ You may need to do this if you use a custom user model and upgrade Django.
   redirects to `/` instead. **Behaviour change:** existing referrals whose
   `redirect_to` points to another host, including ones created directly with
   `Referral.create`, now land on `/` instead of that host.
+* `Referral.expired_at` is now enforced ([#7](https://github.com/pinax/pinax-referrals/issues/7)).
+  An expired referral link still redirects, but records no response and sets
+  no referral cookie; `Referral.record_response` records nothing for it; and
+  `SessionJumpingMiddleware` no longer links its responses to a user who logs
+  in. Added `Referral.is_active()`, and `expired_at` to the admin list and
+  filters. **Behaviour change:** referrals that already have an `expired_at`
+  in the past stop counting.
 
 ### 4.4.0 (2026-07-28)
 

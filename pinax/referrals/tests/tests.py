@@ -1,7 +1,10 @@
 import json
+from datetime import timedelta
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.contrib.auth.models import AnonymousUser
+from django.test import RequestFactory, TestCase
+from django.utils import timezone
 
 from pinax.referrals.models import Referral, ReferralResponse
 
@@ -145,3 +148,76 @@ class Tests(TestCase):
         response = self.client.get(referral.url + "?redirect_to=https://www.google.com/")
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response["Location"], "/")
+
+
+class ExpiredReferralTests(TestCase):
+
+    def expire(self, referral):
+        referral.expired_at = timezone.now() - timedelta(seconds=1)
+        referral.save()
+
+    def login(self):
+        user = get_user_model().objects.create_user("janedoe", "jane@doe.com", "notsosecret")
+        self.assertTrue(self.client.login(username=user.username, password="notsosecret"))
+        return user
+
+    def test_expired_referral_redirects_without_recording(self):
+        referral = Referral.create(redirect_to="/landing/")
+        self.expire(referral)
+        response = self.client.get(referral.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/landing/")
+        self.assertFalse(referral.responses.exists())
+        self.assertNotIn("pinax-referral", response.cookies)
+
+    def test_expired_referral_redirects_logged_in_user_without_recording(self):
+        referral = Referral.create(redirect_to="/landing/")
+        self.expire(referral)
+        self.login()
+        response = self.client.get(referral.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/landing/")
+        self.assertFalse(referral.responses.exists())
+
+    def test_referral_expiring_in_the_future_records_response(self):
+        referral = Referral.create(redirect_to="/landing/")
+        referral.expired_at = timezone.now() + timedelta(days=1)
+        referral.save()
+        response = self.client.get(referral.url)
+        self.assertEqual(response["Location"], "/landing/")
+        self.assertEqual(referral.responses.count(), 1)
+        self.assertIn("pinax-referral", response.cookies)
+
+    def test_middleware_links_active_referral_to_user_who_logs_in(self):
+        referral = Referral.create(redirect_to="/landing/")
+        self.client.get(referral.url)
+        user = self.login()
+        self.client.get("/")
+        self.assertEqual(referral.responses.get().user, user)
+
+    def test_middleware_does_not_link_referral_that_expired_before_login(self):
+        referral = Referral.create(redirect_to="/landing/")
+        self.client.get(referral.url)
+        self.expire(referral)
+        self.login()
+        response = self.client.get("/")
+        self.assertIsNone(referral.responses.get().user)
+        self.assertEqual(response.cookies["pinax-referral"].value, "")
+
+    def anonymous_request(self):
+        request = RequestFactory().get("/")
+        request.session = self.client.session
+        request.user = AnonymousUser()
+        return request
+
+    def test_record_response_for_active_referral(self):
+        referral = Referral.create(redirect_to="/landing/")
+        self.client.get(referral.url)
+        self.assertEqual(Referral.record_response(self.anonymous_request(), "SIGNED_UP").referral, referral)
+
+    def test_record_response_ignores_referral_that_expired_after_the_click(self):
+        referral = Referral.create(redirect_to="/landing/")
+        self.client.get(referral.url)
+        self.expire(referral)
+        self.assertIsNone(Referral.record_response(self.anonymous_request(), "SIGNED_UP"))
+        self.assertFalse(referral.responses.filter(action="SIGNED_UP").exists())
