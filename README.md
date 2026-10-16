@@ -71,13 +71,13 @@ which is useful in marketing promotions and the like.
 
 #### Supported Django and Python Versions
 
-Django / Python | 3.8 | 3.9 | 3.10 | 3.11 | 3.12 | 3.13 | 3.14
---------------- | --- | --- | ---- | ---- | ---- | ---- | ----
-3.2  |  *  |  *  |  *   |      |      |      |
-4.2  |  *  |  *  |  *   |  *   |  *   |      |
-5.2  |     |     |  *   |  *   |  *   |  *   |  *
-6.0  |     |     |      |      |  *   |  *   |  *
-6.1  |     |     |      |      |  *   |  *   |  *
+Django / Python | 3.10 | 3.11 | 3.12 | 3.13 | 3.14
+--------------- | ---- | ---- | ---- | ---- | ----
+3.2  |  *   |      |      |      |
+4.2  |  *   |  *   |  *   |      |
+5.2  |  *   |  *   |  *   |  *   |  *
+6.0  |      |      |  *   |  *   |  *
+6.1  |      |      |  *   |  *   |  *
 
 
 ## Documentation
@@ -447,6 +447,9 @@ You may need to do this if you use a custom user model and upgrade Django.
   in. Added `Referral.is_active()`, and `expired_at` to the admin list and
   filters. **Behaviour change:** referrals that already have an `expired_at`
   in the past stop counting.
+* Dropped support for Python 3.8 and 3.9, which are past end of life;
+  `python_requires` is now `>=3.10`. Django 3.2 is now tested on Python 3.10
+  only, and Django 4.2 on Python 3.10-3.12.
 
 ### 4.4.0 (2026-07-28)
 
