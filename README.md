@@ -459,7 +459,7 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 ## Change Log
 
-### Unreleased
+### 4.5.0 (2026-10-16)
 
 * Security: fixed an open redirect. Any logged-in user could POST an external
   `redirect_to` to the `create_referral` view and get a referral link on your
@@ -483,6 +483,7 @@ You may need to do this if you use a custom user model and upgrade Django.
 * Dropped support for Python 3.8 and 3.9, which are past end of life;
   `python_requires` is now `>=3.10`. Django 3.2 is now tested on Python 3.10
   only, and Django 4.2 on Python 3.10-3.12.
+* Now tested against Django 3.2, 4.2, 5.2, 6.0, 6.1 and main, on Python 3.10-3.14
 * The `pinax-referral` cookie, which holds the visitor's session key, is now
   `HttpOnly` and `SameSite=Lax`, and `Secure` when set over HTTPS.
   **Behaviour change:** JavaScript can no longer read it.
