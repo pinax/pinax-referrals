@@ -15,11 +15,23 @@ except ImportError:
     from django.contrib.auth.decorators import login_required
 
 
+def _is_safe_redirect_url(request, url):
+    return url_has_allowed_host_and_scheme(
+        url=url,
+        allowed_hosts=request.get_host(),
+        require_https=request.is_secure(),
+    )
+
+
 @login_required
 @require_POST
 def create_referral(request):
+    redirect_to = request.POST.get("redirect_to")
+    if not _is_safe_redirect_url(request, redirect_to):
+        return JsonResponse({"error": "redirect_to must be a URL on this site."}, status=400)
+
     target = None
-    ctx = {"url": request.POST.get("redirect_to")}
+    ctx = {"url": redirect_to}
 
     if request.POST.get("obj_ct_pk") and request.POST.get("obj_pk"):
         ct = ContentType.objects.get(pk=request.POST.get("obj_ct_pk"))
@@ -29,7 +41,7 @@ def create_referral(request):
 
     referral = Referral.create(
         user=request.user,
-        redirect_to=request.POST.get("redirect_to"),
+        redirect_to=redirect_to,
         label=request.POST.get("label", ""),
         target=target
     )
@@ -50,21 +62,14 @@ def process_referral(request, code):
     session_key = ensure_session_key(request)
     referral.respond(request, "RESPONDED")
     max_age = getattr(settings, "PINAX_COOKIE_MAX_AGE", None)
-    try:
-        next_url = request.GET[
-            getattr(settings, "PINAX_REFERRALS_REDIRECT_ATTRIBUTE", "redirect_to")
-        ]
-        url_is_safe = url_has_allowed_host_and_scheme(
-            url=next_url,
-            allowed_hosts=request.get_host(),
-            require_https=request.is_secure(),
-        )
-        if url_is_safe:
-            response = redirect(next_url)
-        else:
-            response = redirect(referral.redirect_to)
-    except KeyError:
-        response = redirect(referral.redirect_to)
+    next_url = request.GET.get(
+        getattr(settings, "PINAX_REFERRALS_REDIRECT_ATTRIBUTE", "redirect_to")
+    )
+    if not _is_safe_redirect_url(request, next_url):
+        next_url = referral.redirect_to
+    if not _is_safe_redirect_url(request, next_url):
+        next_url = "/"
+    response = redirect(next_url)
     if request.user.is_anonymous:
         response.set_cookie(
             "pinax-referral",

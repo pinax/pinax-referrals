@@ -151,7 +151,11 @@ their referral url that they could forward on to other users:
     {{ user.get_profile.referral.url }}
 ```
 
-The only required parameter for `Referral.create` is `redirect_to`. If
+The only required parameter for `Referral.create` is `redirect_to`. It must
+be a URL on your own site (a path such as `/signup/`, or an absolute URL on
+the host serving the referral link): the `create_referral` view rejects any
+other value with a 400 response, and `process_referral` redirects to `/`
+instead of following a stored `redirect_to` that points elsewhere. If
 you don't specify a user it will be recorded as `None`. This can be useful
 if you want to attach a relationship between some object in your system
 to a referral that might not have a user associated with it.
@@ -274,7 +278,8 @@ Defaults to `redirect_to`
 Defines the URL attribute to retrieve dynamic referral redirection URLs from.
 
 The URL is checked by `django.utils.http.url_has_allowed_host_and_scheme`,
-so if the domain name is not listed in `ALLOWED_HOSTS` the view will redirect to `Referral.redirec_to` path.
+so if it points to a host other than the one serving the request, the view
+will redirect to `Referral.redirect_to` instead.
 
 ### Signals
 
@@ -408,6 +413,17 @@ You may need to do this if you use a custom user model and upgrade Django.
 
 
 ## Change Log
+
+### Unreleased
+
+* Security: fixed an open redirect. Any logged-in user could POST an external
+  `redirect_to` to the `create_referral` view and get a referral link on your
+  domain that bounced visitors to that external site. `create_referral` now
+  rejects a `redirect_to` that is not on the requesting host (400), and
+  `process_referral` no longer follows a stored off-site `redirect_to`; it
+  redirects to `/` instead. **Behaviour change:** existing referrals whose
+  `redirect_to` points to another host, including ones created directly with
+  `Referral.create`, now land on `/` instead of that host.
 
 ### 4.4.0 (2026-07-28)
 
