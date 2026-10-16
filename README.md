@@ -240,6 +240,10 @@ Defaults to `None`
 
 The total amount of time (in seconds) the cookie lasts in the client's browser.
 
+The `pinax-referral` cookie holds the visitor's session key. It is set
+`HttpOnly` and `SameSite=Lax`, and `Secure` when the referral link was
+followed over HTTPS.
+
 #### `PINAX_REFERRALS_IP_ADDRESS_META_FIELD`
 
 Defaults to `"HTTP_X_FORWARDED_FOR"`
@@ -450,6 +454,20 @@ You may need to do this if you use a custom user model and upgrade Django.
 * Dropped support for Python 3.8 and 3.9, which are past end of life;
   `python_requires` is now `>=3.10`. Django 3.2 is now tested on Python 3.10
   only, and Django 4.2 on Python 3.10-3.12.
+* The `pinax-referral` cookie, which holds the visitor's session key, is now
+  `HttpOnly` and `SameSite=Lax`, and `Secure` when set over HTTPS.
+  **Behaviour change:** JavaScript can no longer read it.
+* Fixed a server error (500) in `process_referral` when the `redirect_to`
+  URL parameter or a stored `redirect_to` is a bare word that is not a URL
+  name (e.g. `?redirect_to=foo`). It now falls back to the next target, as
+  for an off-site URL.
+* Fixed a 500 on every request of a logged-in user whose `pinax-referral`
+  cookie has no `:`, in `SessionJumpingMiddleware` (and in
+  `Referral.for_request`). The cookie is dropped instead.
+* `create_referral` returns 400 instead of a 500 when `obj_ct_pk` and
+  `obj_pk` do not identify an existing object.
+* `Referral.referral_for_request`, and so `Referral.record_response`, now
+  fetches only the visitor's latest response instead of all of them.
 
 ### 4.4.0 (2026-07-28)
 

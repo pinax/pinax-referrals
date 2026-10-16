@@ -14,14 +14,15 @@ class SessionJumpingMiddleware(MiddlewareMixin):
             )
         cookie = request.COOKIES.get("pinax-referral")
         if request.user.is_authenticated and cookie:
-            code, session_key = cookie.split(":")
+            code, _, session_key = cookie.partition(":")
 
-            try:
-                referral = Referral.objects.get(code=code)
-                if referral.is_active():
-                    referral.link_responses_to_user(request.user, session_key)
-            except Referral.DoesNotExist:
-                pass
+            if session_key:
+                try:
+                    referral = Referral.objects.get(code=code)
+                    if referral.is_active():
+                        referral.link_responses_to_user(request.user, session_key)
+                except Referral.DoesNotExist:
+                    pass
 
             request.user._can_delete_pinax_referral_cookie = True
 
