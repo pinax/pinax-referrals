@@ -1,13 +1,16 @@
-from django.conf import settings
+from urllib.parse import urlsplit
+
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, JsonResponse
+from django.http.request import split_domain_port
 from django.shortcuts import get_object_or_404, resolve_url
 from django.template.loader import render_to_string
 from django.urls import NoReverseMatch
-from django.utils.http import url_has_allowed_host_and_scheme
+from django.utils.http import is_same_domain, url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
+from .conf import settings
 from .models import Referral
 from .utils import ensure_session_key
 
@@ -17,10 +20,28 @@ except ImportError:
     from django.contrib.auth.decorators import login_required
 
 
+def _allowed_redirect_hosts(request, url):
+    """
+    The host serving the request, plus url's host if it matches
+    PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS.
+    """
+    allowed_hosts = {request.get_host()}
+    try:
+        netloc = urlsplit(url).netloc
+    except ValueError:  # url_has_allowed_host_and_scheme() refuses an unparsable URL too
+        return allowed_hosts
+    domain, _port = split_domain_port(netloc)
+    if domain and any(is_same_domain(domain, host) for host in settings.PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS):
+        allowed_hosts.add(netloc)
+    return allowed_hosts
+
+
 def _is_safe_redirect_url(request, url):
+    if not url:
+        return False
     return url_has_allowed_host_and_scheme(
         url=url,
-        allowed_hosts=request.get_host(),
+        allowed_hosts=_allowed_redirect_hosts(request, url.strip()),
         require_https=request.is_secure(),
     )
 

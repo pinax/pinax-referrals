@@ -154,9 +154,11 @@ their referral url that they could forward on to other users:
 
 The only required parameter for `Referral.create` is `redirect_to`. It must
 be a URL on your own site (a path such as `/signup/`, or an absolute URL on
-the host serving the referral link): the `create_referral` view rejects any
-other value with a 400 response, and `process_referral` redirects to `/`
-instead of following a stored `redirect_to` that points elsewhere. If
+the host serving the referral link or on a host listed in
+[`PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS`](#pinax_referrals_allowed_redirect_hosts)):
+the `create_referral` view rejects any other value with a 400 response, and
+`process_referral` redirects to `/` instead of following a stored
+`redirect_to` that points elsewhere. If
 you don't specify a user it will be recorded as `None`. This can be useful
 if you want to attach a relationship between some object in your system
 to a referral that might not have a user associated with it.
@@ -298,8 +300,31 @@ Defaults to `redirect_to`
 Defines the URL attribute to retrieve dynamic referral redirection URLs from.
 
 The URL is checked by `django.utils.http.url_has_allowed_host_and_scheme`,
-so if it points to a host other than the one serving the request, the view
-will redirect to `Referral.redirect_to` instead.
+so if it points to a host other than the one serving the request (or one
+listed in `PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS`), the view will redirect
+to `Referral.redirect_to` instead.
+
+#### `PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS`
+
+Defaults to `[]`
+
+Hosts that referral links may redirect to in addition to the host serving
+the request, for sites that serve referral links on one domain and land
+visitors on another (for example links on `www.example.com` that open
+`app.example.com`). Entries are matched like Django's `ALLOWED_HOSTS`:
+`"www.example.com"` matches that host only, and `".example.com"` matches
+`example.com` and all of its subdomains. A port in the target URL is ignored.
+Unlike `ALLOWED_HOSTS`, `"*"` matches nothing, because allowing every host
+would turn referral links back into an open redirect.
+
+```python
+PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS = ["app.example.com", ".example.org"]
+```
+
+The list applies to `redirect_to` when `create_referral` stores it, to the
+stored `redirect_to` when a link is followed, and to the `redirect_to` URL
+parameter. On a request served over HTTPS, an absolute target must use
+`https`.
 
 ### Signals
 
@@ -444,6 +469,10 @@ You may need to do this if you use a custom user model and upgrade Django.
   redirects to `/` instead. **Behaviour change:** existing referrals whose
   `redirect_to` points to another host, including ones created directly with
   `Referral.create`, now land on `/` instead of that host.
+* Added the `PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS` setting. Sites whose
+  referral links redirect to another of their own hosts or subdomains (for
+  example from `www` to `app`) list those hosts there; without it, the fix
+  above sends those visitors to `/`.
 * `Referral.expired_at` is now enforced ([#7](https://github.com/pinax/pinax-referrals/issues/7)).
   An expired referral link still redirects, but records no response and sets
   no referral cookie; `Referral.record_response` records nothing for it; and

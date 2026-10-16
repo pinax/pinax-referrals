@@ -4,7 +4,7 @@ from datetime import timedelta
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.contenttypes.models import ContentType
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory, TestCase, override_settings
 from django.utils import timezone
 
 from pinax.referrals.models import Referral, ReferralResponse
@@ -312,3 +312,70 @@ class RobustnessTests(TestCase):
         referral = Referral.create(redirect_to="/landing/")
         cookie = self.client.get(referral.url, secure=True).cookies["pinax-referral"]
         self.assertIs(cookie["secure"], True)
+
+
+class AllowedRedirectHostsTests(TestCase):
+    """PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS adds redirect hosts to the one serving the request."""
+
+    def setUp(self):
+        referring_user = get_user_model().objects.create_user("johndoe", "john@doe.com", "notsosecret")
+        self.assertTrue(self.client.login(username=referring_user.username, password="notsosecret"))
+
+    def assert_allowed(self, redirect_to, secure=False):
+        with self.subTest(redirect_to=redirect_to):
+            response = self.client.post("/", data={"redirect_to": redirect_to}, secure=secure)
+            self.assertEqual(response.status_code, 200)
+            referral = Referral.create(redirect_to=redirect_to)
+            response = self.client.get(referral.url, secure=secure)
+            self.assertEqual(response["Location"], redirect_to)
+            response = self.client.get(
+                Referral.create(redirect_to="/landing/").url, {"redirect_to": redirect_to}, secure=secure
+            )
+            self.assertEqual(response["Location"], redirect_to)
+
+    def assert_refused(self, redirect_to, secure=False):
+        with self.subTest(redirect_to=redirect_to):
+            response = self.client.post("/", data={"redirect_to": redirect_to}, secure=secure)
+            self.assertEqual(response.status_code, 400)
+            referral = Referral.create(redirect_to=redirect_to)
+            response = self.client.get(referral.url, secure=secure)
+            self.assertEqual(response["Location"], "/")
+            response = self.client.get(
+                Referral.create(redirect_to="/landing/").url, {"redirect_to": redirect_to}, secure=secure
+            )
+            self.assertEqual(response["Location"], "/landing/")
+
+    def test_default_refuses_other_domain_and_subdomain(self):
+        self.assert_refused("https://www.example.com/landing/")
+        self.assert_refused("http://app.testserver/landing/")
+
+    @override_settings(PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS=["www.example.com"])
+    def test_listed_exact_host(self):
+        self.assert_allowed("https://www.example.com/landing/")
+        self.assert_allowed("http://www.example.com/landing/")
+        self.assert_refused("https://app.example.com/landing/")
+        self.assert_refused("https://example.com/landing/")
+
+    @override_settings(PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS=[".example.com"])
+    def test_leading_dot_allows_domain_and_subdomains(self):
+        self.assert_allowed("https://example.com/landing/")
+        self.assert_allowed("https://app.example.com/landing/")
+        self.assert_allowed("https://a.b.example.com:8443/landing/")
+        self.assert_refused("https://example.com.evil.com/landing/")
+        self.assert_refused("https://evilexample.com/landing/")
+
+    @override_settings(PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS=["www.example.com", ".example.com"])
+    def test_unsafe_urls_refused_even_when_hosts_are_listed(self):
+        self.assert_refused("javascript:alert(1)")
+        self.assert_refused("//evil.com/")
+        self.assert_refused("https://[evil/")
+
+    @override_settings(PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS=["*"])
+    def test_wildcard_matches_no_host(self):
+        """Unlike ALLOWED_HOSTS, "*" would turn referral links back into an open redirect."""
+        self.assert_refused("https://evil.com/")
+
+    @override_settings(PINAX_REFERRALS_ALLOWED_REDIRECT_HOSTS=[".example.com"])
+    def test_https_request_refuses_http_target_on_listed_host(self):
+        self.assert_allowed("https://app.example.com/landing/", secure=True)
+        self.assert_refused("http://app.example.com/landing/", secure=True)
