@@ -9,6 +9,7 @@ class PinaxReferralsAppConf(AppConf):
 
     IP_ADDRESS_META_FIELD = "HTTP_X_FORWARDED_FOR"
     SECURE_URLS = False
+    ALLOWED_REDIRECT_HOSTS = []
     ACTION_DISPLAY = {"RESPONDED": "Clicked on referral link"}
     CODE_GENERATOR_CALLBACK = "pinax.referrals.callbacks.generate_code"
     RESPONSES_FILTER_CALLBACK = "pinax.referrals.callbacks.filter_responses"
