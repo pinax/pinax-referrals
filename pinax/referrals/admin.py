@@ -15,9 +15,10 @@ class ReferralAdmin(admin.ModelAdmin):
         "target_content_type",
         "target_object_id",
         "url",
+        "expired_at",
     ]
     readonly_fields = ["code", "created_at"]
-    list_filter = ["target_content_type", "created_at"]
+    list_filter = ["target_content_type", "created_at", "expired_at"]
     search_fields = ["user__first_name", "user__last_name", "user__email", "user__username", "code"]
     autocomplete_fields = ["user"]
 

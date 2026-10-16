@@ -41,6 +41,9 @@ class Referral(models.Model):
         else:
             return self.code
 
+    def is_active(self):
+        return self.expired_at is None or self.expired_at > timezone.now()
+
     @classmethod
     def for_request(cls, request):
         cookie = request.COOKIES.get("pinax-referral")
@@ -91,7 +94,7 @@ class Referral(models.Model):
     @classmethod
     def record_response(cls, request, action_string, target=None):
         referral = cls.referral_for_request(request)
-        if referral:
+        if referral and referral.is_active():
             return referral.respond(request, action_string, target=target)
 
     @classmethod

@@ -1,5 +1,8 @@
+from datetime import timedelta
+
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
+from django.utils import timezone
 
 from model_bakery import baker
 from pinax.referrals.models import Referral
@@ -51,3 +54,14 @@ class ReferralTests(TestCase):
         referral = baker.make("Referral", code=None, target=None)
         # the callback function is being called in the save() method, inside baker.make
         self.assertEqual(referral.code, "some-generated-code")
+
+    def test_is_active_without_expiry(self):
+        self.assertTrue(baker.make("Referral", expired_at=None, target=None).is_active())
+
+    def test_is_active_before_expiry(self):
+        referral = baker.make("Referral", expired_at=timezone.now() + timedelta(days=1), target=None)
+        self.assertTrue(referral.is_active())
+
+    def test_is_not_active_after_expiry(self):
+        referral = baker.make("Referral", expired_at=timezone.now() - timedelta(seconds=1), target=None)
+        self.assertFalse(referral.is_active())
